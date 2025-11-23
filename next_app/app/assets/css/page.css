@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@layer utilities{
+    .page{
+        @apply min-h-screen w-full 
+    }
+
+    .middleScreen {
+        @apply flex justify-center items-center h-screen
+    }
+}

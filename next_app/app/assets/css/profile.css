@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .profile-page {
+    @apply h-screen border-2;
+  }
+}
+
+.cl-userProfile-root {
+  width: 100% !important;
+  height: inherit;
+}
+.cl-userProfile-root .cl-cardBox {
+  width: 100%;
+  box-shadow: none;
+  height: inherit;
+}
