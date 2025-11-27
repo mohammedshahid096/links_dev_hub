@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "lib": ["es2020"],
+    "target": "ES2023",
+    "lib": ["ES2023"],
     "rootDir": "./",
     "outDir": "./dist",
-    "module": "node16",
-    "moduleResolution": "node16",
-    // "types": ["node", "express"],
+    "module": "CommonJS", // Changed from ESNext
+    "moduleResolution": "node",
     "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
