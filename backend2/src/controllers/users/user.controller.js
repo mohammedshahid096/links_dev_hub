@@ -4,6 +4,7 @@ const logger = require("../../config/logger.config");
 const { VerifyPasswordMethod } = require("../../utils/verify.password");
 const { CreateAccessToken } = require("../../utils/jwt.token");
 const errorHandling = require("../../utils/errorHandling");
+const { prisma } = require("../../config/prisma.config");
 
 const loginUserController = async (req, res, next) => {
   try {
@@ -52,6 +53,21 @@ const loginUserController = async (req, res, next) => {
   }
 };
 
+const testController = async (req, res, next) => {
+  try {
+    const user = await prisma.user.create({
+      data: {
+        name: "Alice",
+        email: "alice@prisma.io",
+      },
+    });
+    console.log("Created user:", user);
+  } catch (error) {
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   loginUserController,
+  testController,
 };
