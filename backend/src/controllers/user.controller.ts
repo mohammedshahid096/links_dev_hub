@@ -7,15 +7,9 @@ export const getAllUsersController = async (
   next: NextFunction
 ) => {
   try {
-    // const user = await prisma.user.create({
-    //   data: {
-    //     name: "Shahid",
-    //     email: "test@gmail.com",
-    //     password: "hashedpassword",
-    //   },
-    // });
-    const user = await prisma.user.findMany();
-
+    const user = await prisma.user.findMany({
+      select: { name: true, email: true, role: true },
+    });
     res.json(user);
   } catch (error) {
     res.json(error);
