@@ -7,10 +7,18 @@ export const getAllUsersController = async (
   next: NextFunction
 ) => {
   try {
-    const user = await prisma.user.findMany({
-      select: { name: true, email: true, role: true },
+    const users = await prisma.user.findMany({
+      select: {
+        name: true,
+        email: true,
+        role: true,
+        categories: {
+          select: { name: true, slug: true },
+        },
+      },
+      // include: { categories: true },
     });
-    res.json(user);
+    res.json(users);
   } catch (error) {
     res.json(error);
   }
