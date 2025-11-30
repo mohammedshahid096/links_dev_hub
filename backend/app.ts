@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 // configs
 import corsConfig from "./src/configs/cors.config";
 import helmetConfig from "./src/configs/helmet.config";
@@ -8,6 +8,7 @@ import morganConfigFunction from "./src/configs/morgan.config";
 import compressionConfig from "./src/configs/compression.config";
 // routes
 import IndexRoutes from "./src/routes/index.routes";
+import errorHandling from "./src/utils/errorHandling.util";
 
 const app: Application = express();
 
@@ -23,6 +24,12 @@ if (config.DEVELOPMENT_MODE === "development") {
   app.use(morganConfigFunction());
 }
 
+// routes
 app.use(IndexRoutes);
+
+// error handling
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  errorHandling.handlingAppError(err, res);
+});
 
 export default app;

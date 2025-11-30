@@ -6,7 +6,7 @@ interface Config {
   DEVELOPMENT_MODE: Environment;
   CORS_ALLOW_ORIGINS: string[];
   ACCESS_TOKEN_KEY: string;
-  ACCESS_TOKEN_KEY_TIME: string | number;
+  ACCESS_TOKEN_KEY_TIME: string;
 }
 
 dotenv.config();
