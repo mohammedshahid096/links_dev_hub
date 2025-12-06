@@ -1,4 +1,5 @@
 import express, { Application, Request, Response, NextFunction } from "express";
+import moment from "moment-timezone";
 // configs
 import corsConfig from "./src/configs/cors.config";
 import helmetConfig from "./src/configs/helmet.config";
@@ -23,6 +24,7 @@ app.use(express.static("public"));
 if (config.DEVELOPMENT_MODE === "development") {
   app.use(morganConfigFunction());
 }
+moment.tz.setDefault("Asia/Kolkata");
 
 // routes
 app.use(IndexRoutes);

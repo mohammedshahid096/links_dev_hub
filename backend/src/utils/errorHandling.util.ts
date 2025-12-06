@@ -59,7 +59,7 @@ class ErrorHandlerClass {
   }
 
   //   for controllers
-  handlingControllerError(error: AppError, next: NextFunction) {
+  handlingControllersError(error: AppError, next: NextFunction) {
     let httpError;
     if (error instanceof httpErrors.HttpError) {
       httpError = error;
