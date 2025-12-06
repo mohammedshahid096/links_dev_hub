@@ -1,11 +1,19 @@
 import { Router } from "express";
-import { registerAuthController } from "../controllers/auth.controller";
-import { registerAuthValidation } from "../validations/auth.joi";
+import {
+  loginAuthController,
+  registerAuthController,
+} from "../controllers/auth.controller";
+import {
+  loginAuthValidation,
+  registerAuthValidation,
+} from "../validations/auth.joi";
 
 const authRoutes = Router();
 
 authRoutes
   .route("/register")
   .post(registerAuthValidation, registerAuthController);
+
+authRoutes.route("/login").post(loginAuthValidation, loginAuthController);
 
 export default authRoutes;
