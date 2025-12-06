@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import ApiV1Routes from "./api.v1.routes";
+import apiV1Routes from "./api.v1.routes";
 
 const IndexRoutes = Router();
 
@@ -18,7 +18,7 @@ IndexRoutes.get("/health", (req: Request, res: Response) => {
 });
 
 // api v1 routes
-IndexRoutes.use("/api/v1/", ApiV1Routes);
+IndexRoutes.use("/api/v1/", apiV1Routes);
 
 // if no routes find-out
 IndexRoutes.use("", (req: Request, res: Response) => {
