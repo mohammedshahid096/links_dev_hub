@@ -8,6 +8,7 @@ import {
   createHashPassword,
   verifyPasswordMethod,
 } from "../utils/bycrypt.util";
+import { createAccessToken } from "../utils/jwt.util";
 
 export const registerAuthController = async (
   req: Request,
@@ -44,7 +45,10 @@ export const registerAuthController = async (
       message: "User registered successfully",
     });
   } catch (error) {
-    logger.error("Controller-user.controller-RegisterController-Error", error);
+    logger.error(
+      "controller - auth.controller - registerAuthController - error",
+      error
+    );
     errorHandling.handlingControllersError(error as AppError, next);
   }
 };
@@ -78,15 +82,53 @@ export const loginAuthController = async (
 
     delete data.password;
 
+    let token = await createAccessToken(isUserFound.id);
+
     logger.info("controller - auth.controller - loginAuthController - end");
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
       message: "Login functionality to be implemented",
       data,
+      otherData: { token },
     });
   } catch (error) {
     logger.error(
       "Controller - auth.controller - loginAuthController - Error",
+      error
+    );
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};
+
+export const profileAuthController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    logger.info("controller - auth.controller - profileAuthController - start");
+    const authUser = req.authUser;
+    const userProfile = await prisma.user.findUnique({
+      where: { id: authUser?.id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+
+    logger.info("controller - auth.controller - profileAuthController - end");
+    responseHandlingUtil.successResponseStandard(res, {
+      statusCode: 200,
+      message: "User profile fetched successfully",
+      data: userProfile,
+    });
+  } catch (error) {
+    logger.error(
+      "Controller - auth.controller - profileAuthController - Error",
       error
     );
     errorHandling.handlingControllersError(error as AppError, next);
