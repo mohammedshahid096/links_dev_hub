@@ -6,35 +6,6 @@ import responseHandlingUtil from "../utils/responseHandling.util";
 import httpErrors from "http-errors";
 import slugify from "slugify";
 
-// get all categories controller
-export const getAllCategoriesController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    logger.info(
-      "controller - category.controller - getAllCategoriesController - start"
-    );
-    const categories = await prisma.category.findMany();
-
-    logger.info(
-      "controller - category.controller - getAllCategoriesController - end"
-    );
-    responseHandlingUtil.successResponseStandard(res, {
-      statusCode: 200,
-      message: "Categories fetched successfully",
-      data: categories,
-    });
-  } catch (error) {
-    logger.error(
-      "controller - category.controller - getAllCategoriesController - error",
-      error
-    );
-    errorHandling.handlingControllersError(error as AppError, next);
-  }
-};
-
 // create category controller
 export const createCategoryController = async (
   req: Request,
@@ -73,6 +44,71 @@ export const createCategoryController = async (
   } catch (error) {
     logger.error(
       "controller - category.controller - createCategoryController - error",
+      error
+    );
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};
+
+// get all categories controller
+export const getAllCategoriesController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    logger.info(
+      "controller - category.controller - getAllCategoriesController - start"
+    );
+    const categories = await prisma.category.findMany();
+
+    logger.info(
+      "controller - category.controller - getAllCategoriesController - end"
+    );
+    responseHandlingUtil.successResponseStandard(res, {
+      statusCode: 200,
+      message: "Categories fetched successfully",
+      data: categories,
+    });
+  } catch (error) {
+    logger.error(
+      "controller - category.controller - getAllCategoriesController - error",
+      error
+    );
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};
+
+// get category by id/slug controller
+export const getCategoryByidController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    logger.info(
+      "controller - category.controller - getCategoryByidController - start"
+    );
+    const { id } = req.params;
+    const category = await prisma.category.findFirst({
+      where: {
+        id,
+      },
+    });
+    if (!category) {
+      return next(httpErrors.NotFound("Category not found"));
+    }
+    logger.info(
+      "controller - category.controller - getCategoryByidController - end"
+    );
+    responseHandlingUtil.successResponseStandard(res, {
+      statusCode: 200,
+      message: "Category fetched successfully",
+      data: category,
+    });
+  } catch (error) {
+    logger.error(
+      "controller - category.controller - getCategoryByidController - error",
       error
     );
     errorHandling.handlingControllersError(error as AppError, next);
