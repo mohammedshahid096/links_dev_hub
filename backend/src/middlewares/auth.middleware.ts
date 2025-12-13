@@ -16,6 +16,7 @@ declare module "express-serve-static-core" {
   }
 }
 
+// authentication middleware
 export const authentication = async (
   req: Request,
   res: Response,
@@ -70,4 +71,28 @@ export const authentication = async (
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
+};
+
+// authorization middleware
+export const authorization = (roles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    try {
+      logger.info("middleware - auth.middleware - authorization - start");
+      const authUser = req.authUser;
+      if (!authUser) {
+        return next(httpErrors.Unauthorized("User not authenticated"));
+      }
+      if (!roles.includes(authUser.role)) {
+        return next(httpErrors.Forbidden("User not authorized"));
+      }
+      logger.info("middleware - auth.middleware - authorization - end");
+      next();
+    } catch (error) {
+      logger.error(
+        "middleware - auth.middleware - authorization - error",
+        error
+      );
+      errorHandling.handlingControllersError(error as AppError, next);
+    }
+  };
 };

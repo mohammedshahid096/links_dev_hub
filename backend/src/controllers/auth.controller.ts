@@ -10,6 +10,7 @@ import {
 } from "../utils/bycrypt.util";
 import { createAccessToken } from "../utils/jwt.util";
 
+// register controller
 export const registerAuthController = async (
   req: Request,
   res: Response,
@@ -53,6 +54,7 @@ export const registerAuthController = async (
   }
 };
 
+// login controller
 export const loginAuthController = async (
   req: Request,
   res: Response,
@@ -100,6 +102,7 @@ export const loginAuthController = async (
   }
 };
 
+// profile controller
 export const profileAuthController = async (
   req: Request,
   res: Response,
