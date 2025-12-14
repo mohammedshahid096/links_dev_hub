@@ -6,13 +6,19 @@ import {
   getCategoryByidController,
 } from "../controllers/category.controller";
 import { roles } from "../constants/index.constants";
+import { createCategoryValidation } from "../validations/category.joi";
 
 const categoryRoutes = Router();
 
 categoryRoutes
   .route("/")
   .get(getAllCategoriesController)
-  .post(authentication, authorization([roles.ADMIN]), createCategoryController);
+  .post(
+    authentication,
+    authorization([roles.ADMIN]),
+    createCategoryValidation,
+    createCategoryController
+  );
 
 categoryRoutes.route("/:id").get(getCategoryByidController);
 

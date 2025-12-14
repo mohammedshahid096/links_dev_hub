@@ -16,7 +16,7 @@ export const createCategoryController = async (
     logger.info(
       "controller - category.controller - createCategoryController - start"
     );
-    const { name } = req.body;
+    const { name, description = null } = req.body;
     const slug = slugify(name, { lower: true, strict: true, trim: true });
     const existingCategory = await prisma.category.findUnique({
       where: { slug },
@@ -26,6 +26,17 @@ export const createCategoryController = async (
         httpErrors.Conflict("Category with this name already exists")
       );
     }
+
+    let data = {
+      name,
+      slug,
+      createdBy: req.authUser?.id!,
+    };
+
+    // if (description) {
+    //   data.description = description;
+    // }
+
     const response = await prisma.category.create({
       data: {
         name,
