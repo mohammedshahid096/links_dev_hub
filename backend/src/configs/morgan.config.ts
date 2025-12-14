@@ -11,12 +11,16 @@ const morganFormat = {
 };
 
 const morganConfigFunction = () => {
-  const morganFilePath = fs.createWriteStream(
-    path.join(__dirname, "../../logs/", "app-http.log"),
-    {
-      flags: "a",
-    }
-  );
+  const logsDir = path.join(__dirname, "../../logs");
+  const logFile = path.join(logsDir, "app-http.log");
+
+  // 1. Ensure logs directory exists
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+  }
+  const morganFilePath = fs.createWriteStream(logFile, {
+    flags: "a",
+  });
 
   const morganConfig = morgan(morganFormat.COMBINE, { stream: morganFilePath });
   return morganConfig;

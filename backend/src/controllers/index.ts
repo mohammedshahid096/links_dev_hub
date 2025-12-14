@@ -1,4 +1,4 @@
 import { getAllUsersController } from "./user.controller";
-import { getAllCategoryController } from "./category.controller";
+import { getAllCategoriesController } from "./category.controller";
 
-export { getAllUsersController, getAllCategoryController };
+export { getAllUsersController, getAllCategoriesController };
