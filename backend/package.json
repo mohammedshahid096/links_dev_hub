@@ -8,6 +8,8 @@
     "watch": "tsx --watch server.ts",
     "build": "tsc",
     "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
