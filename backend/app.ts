@@ -10,6 +10,7 @@ import compressionConfig from "./src/configs/compression.config";
 // routes
 import IndexRoutes from "./src/routes/index.routes";
 import errorHandling from "./src/utils/errorHandling.util";
+import bodyParser from "body-parser";
 
 const app: Application = express();
 
@@ -17,6 +18,7 @@ const app: Application = express();
 app.use(ratelimitConfig);
 app.use(compressionConfig);
 app.use(express.json());
+app.use("/api/v1/webhook/clerk", bodyParser.raw({ type: "application/json" }));
 app.use(helmetConfig);
 app.use(corsConfig);
 app.use(express.urlencoded({ extended: true }));
