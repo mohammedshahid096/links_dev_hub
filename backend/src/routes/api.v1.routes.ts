@@ -2,6 +2,7 @@ import { Router } from "express";
 import authRoutes from "./auth.routes";
 import categoryRoutes from "./category.routes";
 import websiteRoutes from "./website.routes";
+import { clerkWebhookEventController } from "../controllers/clerk.controller";
 
 const apiV1Routes = Router();
 
@@ -13,5 +14,8 @@ apiV1Routes.use("/categories", categoryRoutes);
 
 // website routes
 apiV1Routes.use("/websites", websiteRoutes);
+
+// clerk routes
+apiV1Routes.use("/webhook/clerk", clerkWebhookEventController);
 
 export default apiV1Routes;
