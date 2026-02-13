@@ -1,0 +1,20 @@
+@API_TOKEN_LOCAL = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxZTE1MjA0LTc2NDQtNDUwNy04NjI0LWM2ZGVlZmVmMGIyMiIsImlhdCI6MTc3MDcwMzU5NCwiZXhwIjoxNzcwNzg5OTk0fQ.vzW-RrAEiS7vY7-AYR1u6zpMiRefh9t5G1LHYmywCLg
+@API_BASE_URL_LOCAL = http://localhost:8000/api/v1
+
+
+
+
+
+# Profile API
+GET {{API_BASE_URL_LOCAL}}/auth/profile
+Authorization: Bearer {{API_TOKEN_LOCAL}}
+
+### Add New Payment for a student
+POST {{API_BASE_URL_LOCAL}}/auth/login
+Content-Type: application/json
+
+{
+   "email" : "admin@gmail.com",
+   "password" : "Test@123"
+}
+
