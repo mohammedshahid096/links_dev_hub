@@ -18,7 +18,7 @@ const app: Application = express();
 app.use(ratelimitConfig);
 app.use(compressionConfig);
 app.use(express.json());
-app.use("/api/v1/webhook/clerk", bodyParser.raw({ type: "application/json" }));
+// app.use("/api/v1/webhook/clerk", bodyParser.raw({ type: "application/json" }));
 app.use(helmetConfig);
 app.use(corsConfig);
 app.use(express.urlencoded({ extended: true }));
