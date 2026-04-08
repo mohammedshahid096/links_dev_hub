@@ -1,6 +1,6 @@
 import { createHashPassword } from "./../src/utils/bycrypt.util";
 import { prisma } from "../src/configs/prismaClient";
-import { Role } from "../generated/prisma/enums";
+import { Provider, Role } from "../generated/prisma/enums";
 import slugify from "slugify";
 
 class SeedingService {
@@ -18,24 +18,20 @@ class SeedingService {
     let usersSeedJson: {
       name: string;
       email: string;
-      password: string;
       role: Role;
+      clerkId: string;
+      provider: Provider;
+      profileUrl?: string;
     }[] = [
       {
+        clerkId: "random_clerk_id",
         name: "admin",
         email: "admin@gmail.com",
-        password: "Test@123",
         role: "admin",
+        provider: Provider.GOOGLE,
+        profileUrl: "https://random_imgurl",
       },
     ];
-
-    console.log("Hashing passwords...");
-
-    for (let i = 0; i < usersSeedJson.length; i++) {
-      let password = usersSeedJson[i]?.password;
-      let hashPassword = await createHashPassword(password);
-      usersSeedJson[i].password = hashPassword;
-    }
 
     console.log("Inserting users...");
 

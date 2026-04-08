@@ -20,7 +20,6 @@ enum Role {
 }
 
 enum Provider {
-  EMAIL
   GOOGLE
   GITHUB
 }
@@ -31,7 +30,7 @@ model User {
   clerkId    String    @unique @db.VarChar(200)  
   name       String  @db.VarChar(190)
   email      String  @unique @db.VarChar(190)
-  provider   Provider  @default(EMAIL)
+  provider   Provider  @default(GOOGLE)
   profileUrl String? @db.VarChar(400)
   role       Role    @default(user)
 

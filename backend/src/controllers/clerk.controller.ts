@@ -7,7 +7,7 @@ import httpErrors from "http-errors";
 import config from "../configs/index.config";
 import { Webhook } from "svix";
 import { UserJSON, WebhookEvent } from "@clerk/backend";
-import { User } from "../../generated/prisma/client";
+import { Provider, User } from "../../generated/prisma/client";
 // create category controller
 export const clerkWebhookEventController = async (
   req: Request,
@@ -52,7 +52,6 @@ export const clerkWebhookEventController = async (
     }) as WebhookEvent;
 
     // Handle the event
-    const { id } = evt.data;
     const eventType = evt.type;
 
     if (eventType === "user.created") {
@@ -60,33 +59,47 @@ export const clerkWebhookEventController = async (
       const {
         email_addresses,
         primary_email_address_id,
+        external_accounts,
         first_name,
         last_name,
         image_url,
         id,
       } = evt.data as UserJSON;
 
-      // ✅ Find email using primary_email_address_id (more reliable than [0])
-      const primaryEmail = email_addresses.find(
-        (e) => e.id === primary_email_address_id,
-      );
-
-      // Fallback to first email if primary not found
-      const email =
-        primaryEmail?.email_address ??
-        email_addresses[0]?.email_address ??
-        null;
-
-      console.log(`Syncing User ${id} to database...`);
-
-      const isUserExist = await prisma.user.findUnique({ where: { email } });
+      const isUserExist = await prisma.user.findUnique({
+        where: { clerkId: id },
+      });
 
       if (!isUserExist) {
-        // const newUser :User = {
-        //   name : first_name +" "+ last_name,
-        //   email,
-        //   profileUrl :
-        // }
+        console.log(`Syncing User ${id} to database...`);
+        const provider = external_accounts?.[0]?.provider;
+        const authProvider =
+          provider === "oauth_google"
+            ? Provider.GOOGLE
+            : provider === "oauth_github"
+              ? Provider.GITHUB
+              : Provider.GOOGLE;
+
+        const primaryEmail = email_addresses.find(
+          (e) => e.id === primary_email_address_id,
+        );
+
+        const email =
+          primaryEmail?.email_address ??
+          email_addresses[0]?.email_address ??
+          null;
+
+        const newUser = {
+          clerkId: id,
+          name: first_name + " " + last_name,
+          email,
+          profileUrl: image_url,
+          provider: authProvider,
+        };
+
+        await prisma.user.create({
+          data: newUser,
+        });
       }
     }
 
