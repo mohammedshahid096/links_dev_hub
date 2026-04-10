@@ -22,7 +22,7 @@ categoryRoutes
     authentication,
     authorization([roles.ADMIN]),
     createCategoryValidation,
-    createCategoryController
+    createCategoryController,
   );
 
 categoryRoutes
@@ -32,12 +32,12 @@ categoryRoutes
     authentication,
     authorization([roles.ADMIN]),
     updateCategoryValidation,
-    updateCategoryController
+    updateCategoryController,
   )
   .delete(
     authentication,
     authorization([roles.ADMIN]),
-    deleteCategoryController
+    deleteCategoryController,
   );
 
 export default categoryRoutes;

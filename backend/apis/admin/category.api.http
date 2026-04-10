@@ -3,15 +3,14 @@
 
 
 # Get All Categories API
-# GET {{API_BASE_URL_LOCAL}}/categories
+GET {{API_BASE_URL_LOCAL}}/categories
 
 # creating a new category
 POST {{API_BASE_URL_LOCAL}}/categories
 Content-Type: application/json
 
 {
-   "email" : "admin@gmail.com",
-   "password" : "Test@123"
+   "name" : "css"
 }
 
 
