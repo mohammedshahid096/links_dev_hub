@@ -4,6 +4,7 @@ type Environment = "development" | "production";
 interface Config {
   PORT: number | string;
   DEVELOPMENT_MODE: Environment;
+  DEVELOPMENT_AUTH_ID: string | null;
   CORS_ALLOW_ORIGINS: string[];
   ACCESS_TOKEN_KEY: string;
   ACCESS_TOKEN_KEY_TIME: string;
@@ -17,6 +18,7 @@ const config: Config = {
   PORT: process.env.PORT || 8001,
   DEVELOPMENT_MODE:
     (process.env.DEVELOPMENT_MODE as Environment) || "development",
+  DEVELOPMENT_AUTH_ID: process.env.DEVELOPMENT_AUTH_ID || null,
   CORS_ALLOW_ORIGINS: process.env.ALLOW_ORIGINS_ACCESS
     ? JSON.parse(process.env.ALLOW_ORIGINS_ACCESS)
     : ["http://localhost:3000"],

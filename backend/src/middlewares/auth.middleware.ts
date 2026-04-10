@@ -105,3 +105,47 @@ export const authorization = (roles: string[]) => {
     }
   };
 };
+
+export const devAuthentication = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    logger.info("middleware - auth.middleware - devAuthentication - start");
+
+    const userId = config.DEVELOPMENT_AUTH_ID;
+
+    if (!userId) {
+      return next(httpErrors.Unauthorized("Invalid User Id"));
+    }
+
+    let userExist = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    if (!userExist) return next(httpErrors.NotFound("user not found"));
+    req.authUser = {
+      id: userExist.id,
+      name: userExist.name,
+      email: userExist.email,
+      role: userExist.role,
+    };
+
+    logger.info(`name : ${userExist.name} email: ${userExist.email}`);
+    logger.info("middlewares - auth.middleware - devAuthentication - End");
+    next();
+  } catch (error) {
+    logger.error(
+      "middleware - auth.middleware - devAuthentication - error",
+      error,
+    );
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};
