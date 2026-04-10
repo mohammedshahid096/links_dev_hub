@@ -55,7 +55,6 @@ export const clerkWebhookEventController = async (
     const eventType = evt.type;
 
     if (eventType === "user.created") {
-      console.log(evt);
       const {
         email_addresses,
         primary_email_address_id,
@@ -71,7 +70,7 @@ export const clerkWebhookEventController = async (
       });
 
       if (!isUserExist) {
-        console.log(`Syncing User ${id} to database...`);
+        console.log(`Syncing User ${id} to database... for create`);
         const provider = external_accounts?.[0]?.provider;
         const authProvider =
           provider === "oauth_google"
@@ -99,6 +98,23 @@ export const clerkWebhookEventController = async (
 
         await prisma.user.create({
           data: newUser,
+        });
+      }
+    } else if (eventType === "user.updated") {
+      const { first_name, last_name, image_url, id } = evt.data as UserJSON;
+      console.log(`Syncing User ${id}  to database...for update`);
+
+      const isUserExist = await prisma.user.findUnique({
+        where: { clerkId: id },
+      });
+
+      if (isUserExist) {
+        await prisma.user.update({
+          where: { clerkId: id },
+          data: {
+            name: first_name + " " + last_name,
+            profileUrl: image_url,
+          },
         });
       }
     }
