@@ -1,7 +1,12 @@
 import { Router } from "express";
-import { authentication, authorization } from "../middlewares/auth.middleware";
+import {
+  authentication,
+  authorization,
+  devAuthentication,
+} from "../middlewares/auth.middleware";
 import { roles } from "../constants/index.constants";
 import {
+  addNewWebsiteByUrlController,
   createWebsiteController,
   deleteWebsiteController,
   getAllWebsitesController,
@@ -18,7 +23,7 @@ websiteRoutes
     authentication,
     authorization([roles.ADMIN]),
     createWebsiteValidation,
-    createWebsiteController
+    createWebsiteController,
   );
 
 websiteRoutes
@@ -27,7 +32,15 @@ websiteRoutes
   .delete(
     authentication,
     authorization([roles.ADMIN]),
-    deleteWebsiteController
+    deleteWebsiteController,
+  );
+
+websiteRoutes
+  .route("/add-by-website")
+  .post(
+    devAuthentication,
+    authorization([roles.ADMIN]),
+    addNewWebsiteByUrlController,
   );
 
 export default websiteRoutes;

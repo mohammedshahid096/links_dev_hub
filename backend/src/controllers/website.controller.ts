@@ -5,16 +5,17 @@ import errorHandling, { AppError } from "../utils/errorHandling.util";
 import responseHandlingUtil from "../utils/responseHandling.util";
 import httpErrors from "http-errors";
 import slugify from "slugify";
+import getMetaData from "metadata-scraper";
 
 // create website controller
 export const createWebsiteController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - website.controller - createWebsiteController - start"
+      "controller - website.controller - createWebsiteController - start",
     );
     const { title } = req.body;
     const slug = slugify(title, { lower: true, strict: true, trim: true });
@@ -27,7 +28,7 @@ export const createWebsiteController = async (
 
     if (isExistingWebsite) {
       return next(
-        httpErrors.Conflict("Website with this title already exists")
+        httpErrors.Conflict("Website with this title already exists"),
       );
     }
 
@@ -37,7 +38,7 @@ export const createWebsiteController = async (
       data: websiteDetails,
     });
     logger.info(
-      "controller - website.controller - createWebsiteController - end"
+      "controller - website.controller - createWebsiteController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 201,
@@ -47,7 +48,7 @@ export const createWebsiteController = async (
   } catch (error) {
     logger.error(
       "controller - website.controller - createWebsiteController - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
@@ -57,15 +58,15 @@ export const createWebsiteController = async (
 export const getAllWebsitesController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - website.controller - getAllWebsitesController - start"
+      "controller - website.controller - getAllWebsitesController - start",
     );
     const websites = await prisma.website.findMany();
     logger.info(
-      "controller - website.controller - getAllWebsitesController - end"
+      "controller - website.controller - getAllWebsitesController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
@@ -75,7 +76,7 @@ export const getAllWebsitesController = async (
   } catch (error) {
     logger.error(
       "controller - website.controller - getAllWebsitesController - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
@@ -85,11 +86,11 @@ export const getAllWebsitesController = async (
 export const getSingleWebsiteController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - website.controller - getSingleWebsiteController - start"
+      "controller - website.controller - getSingleWebsiteController - start",
     );
     const { id } = req.params;
     const website = await prisma.website.findUnique({
@@ -100,7 +101,7 @@ export const getSingleWebsiteController = async (
       return next(httpErrors.NotFound("Website not found"));
     }
     logger.info(
-      "controller - website.controller - getSingleWebsiteController - end"
+      "controller - website.controller - getSingleWebsiteController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
@@ -110,7 +111,7 @@ export const getSingleWebsiteController = async (
   } catch (error) {
     logger.error(
       "controller - website.controller - getSingleWebsiteController - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
@@ -120,18 +121,18 @@ export const getSingleWebsiteController = async (
 export const deleteWebsiteController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - website.controller - deleteWebsiteController - start"
+      "controller - website.controller - deleteWebsiteController - start",
     );
     const { id } = req.params;
     const deletedWebsite = await prisma.website.delete({
       where: { id },
     });
     logger.info(
-      "controller - website.controller - deleteWebsiteController - end"
+      "controller - website.controller - deleteWebsiteController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
@@ -141,7 +142,62 @@ export const deleteWebsiteController = async (
   } catch (error) {
     logger.error(
       "controller - website.controller - deleteWebsiteController - error",
-      error
+      error,
+    );
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};
+
+export const addNewWebsiteByUrlController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    logger.info(
+      "controller - website.controller - addNewWebsiteByUrlController - start",
+    );
+    const { url, categoryId } = req.body;
+    const isdWebsiteExist = await prisma.website.findFirst({
+      where: { url },
+    });
+
+    if (isdWebsiteExist) {
+      return next(httpErrors.BadRequest("website already exist"));
+    }
+
+    let slug = url.replace(/https?:\/\//, "");
+    slug = slugify(slug, { lower: true, strict: true });
+
+    const metadata = await getMetaData(url);
+    const details = {
+      scrapedData: metadata,
+      title: metadata?.title || "",
+      slug: slug,
+      url: metadata?.url || url,
+      description: metadata?.description || "",
+      isActive: true,
+      sourceType: metadata?.type || "website",
+      keywords: metadata?.keywords || [],
+      imageUrl: metadata?.image || "",
+      iconUrl: metadata?.icon || "",
+      categoryId,
+      created_by: req.authUser?.id!,
+    };
+
+    const addedWebsiteDetails = await prisma.website.create({ data: details });
+    logger.info(
+      "controller - website.controller - addNewWebsiteByUrlController - end",
+    );
+    responseHandlingUtil.successResponseStandard(res, {
+      statusCode: 201,
+      message: "Website created successfully",
+      data: addedWebsiteDetails,
+    });
+  } catch (error) {
+    logger.error(
+      "controller - website.controller - addNewWebsiteByUrlController - error",
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }

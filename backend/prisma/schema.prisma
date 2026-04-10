@@ -65,13 +65,16 @@ model website {
   title       String   @db.VarChar(200)
   description String?  @db.VarChar(1000)
   url         String   @db.VarChar(200)
-  image       String?  @db.VarChar(200)
-  icon        String?  @db.VarChar(200)
+  imageUrl       String?  @db.VarChar(200)
+  iconUrl        String?  @db.VarChar(200)
   keywords    String[] @db.VarChar(500)
   tags        String[] @db.VarChar(200)
   provider    String?  @db.VarChar(100)
   author      String?  @db.VarChar(100)
   isActive    Boolean  @default(true)
+
+  sourceType  String?  @db.VarChar(50)
+  scrapedData Json?    @db.JsonB
 
   categoryId String   @db.Uuid
   category   Category @relation(fields: [categoryId], references: [id])

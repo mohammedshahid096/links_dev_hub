@@ -1,0 +1,14 @@
+@API_BASE_URL_LOCAL = http://localhost:8000/api/v1
+
+# Get {{API_BASE_URL_LOCAL}}/websites
+
+# creating a new category
+POST {{API_BASE_URL_LOCAL}}/websites/add-by-website
+Content-Type: application/json
+
+{
+   "url" : "https://crontab.guru",
+   "categoryId":"4bc12c0f-8e6c-4ab5-92db-0eaa68550766"
+}
+
+
