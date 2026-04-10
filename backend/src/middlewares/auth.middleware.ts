@@ -3,7 +3,8 @@ import logger from "../configs/logger.config";
 import errorHandling, { AppError } from "../utils/errorHandling.util";
 import { prisma } from "../configs/prismaClient";
 import httpErrors from "http-errors";
-import { verifyAccessToken } from "../utils/jwt.util";
+import { verifyToken } from "@clerk/backend";
+import config from "../configs/index.config";
 
 declare module "express-serve-static-core" {
   interface Request {
@@ -20,7 +21,7 @@ declare module "express-serve-static-core" {
 export const authentication = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info("middleware - auth.middleware - authentication - start");
@@ -33,23 +34,31 @@ export const authentication = async (
 
     // Extract and verify token
     const token = authHeader.split(" ")[1];
-    const decode = await verifyAccessToken(token);
 
-    if (!decode.success || !decode.id) {
-      const errorMessage = decode.error?.message || "Invalid token";
-      return next(httpErrors.Unauthorized(errorMessage));
+    // ── 2. Verify token using Clerk (replaces your verifyAccessToken) ───
+    let payload;
+    try {
+      payload = await verifyToken(token, {
+        secretKey: config.CLERK_SECRET_KEY,
+      });
+    } catch (err) {
+      console.log(err);
+      return next(httpErrors.Unauthorized("Invalid or expired token"));
+    }
+
+    const clerkId = payload.sub;
+
+    if (!clerkId) {
+      return next(httpErrors.Unauthorized("Invalid token payload"));
     }
 
     let userExist = await prisma.user.findUnique({
-      where: { id: decode.id },
+      where: { clerkId },
       select: {
         id: true,
         name: true,
         email: true,
         role: true,
-        password: false,
-        created_at: true,
-        updated_at: true,
       },
     });
 
@@ -67,7 +76,7 @@ export const authentication = async (
   } catch (error) {
     logger.error(
       "middleware - auth.middleware - authentication - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
@@ -90,7 +99,7 @@ export const authorization = (roles: string[]) => {
     } catch (error) {
       logger.error(
         "middleware - auth.middleware - authorization - error",
-        error
+        error,
       );
       errorHandling.handlingControllersError(error as AppError, next);
     }

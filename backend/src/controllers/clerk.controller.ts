@@ -7,7 +7,7 @@ import httpErrors from "http-errors";
 import config from "../configs/index.config";
 import { Webhook } from "svix";
 import { UserJSON, WebhookEvent } from "@clerk/backend";
-import { Provider, User } from "../../generated/prisma/client";
+import { Provider } from "../../generated/prisma/client";
 // create category controller
 export const clerkWebhookEventController = async (
   req: Request,
