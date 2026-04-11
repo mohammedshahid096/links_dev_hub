@@ -8,21 +8,30 @@ import {
 } from "@/components/ui/card";
 import { Folder, Calendar, Tag, CheckCircle2, XCircle } from "lucide-react";
 import { getAdminCategories } from "@/api/category/admin.category";
+import { AddCategoryForm } from "./_components/AddCategoryForm";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function CategoriesPage() {
+  const { getToken } = await auth();
+  const token = await getToken();
+
   let categories = [];
   let error = null;
   
-    const { success, data } = await getAdminCategories();
+  try {
+    const { success, data } = await getAdminCategories(token);
     if (!success) {
       error = data?.message || "Failed to fetch categories";
     } else {
       categories = data.data || [];
     }
+  } catch (err) {
+    error = "Failed to connect to the server";
+  }
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-6 md:gap-4">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
             Categories
@@ -30,6 +39,9 @@ export default async function CategoriesPage() {
           <p className="text-muted-foreground mt-1">
             Manage your categories across the platform
           </p>
+        </div>
+        <div className="w-full md:w-auto">
+          <AddCategoryForm />
         </div>
       </div>
 
