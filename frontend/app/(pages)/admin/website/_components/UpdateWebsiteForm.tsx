@@ -20,6 +20,9 @@ export function UpdateWebsiteForm({
   const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(initialData?.description || "");
   const [isActive, setIsActive] = useState(initialData?.isActive ?? true);
+  const [keywords, setKeywords] = useState(initialData?.keywords ? initialData.keywords.join(', ') : "");
+  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || "");
+  const [iconUrl, setIconUrl] = useState(initialData?.iconUrl || "");
   
   // Scraped data is usually an object or text, let's keep it as text to display
   const scrapedDataStr = initialData?.scrapedData 
@@ -47,6 +50,13 @@ export function UpdateWebsiteForm({
     try {
       const token = await getToken();
       
+      let keywordsArray = undefined;
+      if (typeof keywords === 'string' && keywords.trim()) {
+        keywordsArray = keywords.split(',').map(k => k.trim()).filter(k => k);
+      } else if (!keywords.trim()) {
+        keywordsArray = [];
+      }
+
       // pass the same payload (or the modified object)
       const payload = {
         ...initialData,
@@ -54,6 +64,9 @@ export function UpdateWebsiteForm({
         description,
         categoryId,
         isActive,
+        keywords: keywordsArray,
+        imageUrl,
+        iconUrl
       };
 
        delete payload.id;
@@ -183,6 +196,60 @@ export function UpdateWebsiteForm({
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none"
               />
             </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <label htmlFor="keywords" className="text-sm font-medium leading-none">
+                Keywords <span className="text-muted-foreground font-normal">(comma separated)</span>
+              </label>
+              <input
+                id="keywords"
+                type="text"
+                value={keywords}
+                placeholder="React, Tailwind CSS, Motion"
+                onChange={(e) => setKeywords(e.target.value)}
+                disabled={loading}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="imageUrl" className="text-sm font-medium leading-none">
+                Image URL
+              </label>
+              <input
+                id="imageUrl"
+                type="url"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                disabled={loading}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              {imageUrl && (
+                <div className="mt-2 relative w-32 h-20 rounded-md overflow-hidden border bg-muted flex items-center justify-center">
+                  <img src={imageUrl} alt="preview" className="object-cover w-full h-full" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="iconUrl" className="text-sm font-medium leading-none">
+                Icon URL
+              </label>
+              <input
+                id="iconUrl"
+                type="url"
+                value={iconUrl}
+                onChange={(e) => setIconUrl(e.target.value)}
+                disabled={loading}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              {iconUrl && (
+                <div className="mt-2 relative w-12 h-12 rounded-md overflow-hidden border bg-muted flex items-center justify-center">
+                  <img src={iconUrl} alt="icon preview" className="object-cover w-full h-full" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                </div>
+              )}
+            </div>
+
 
             <div className="space-y-2 md:col-span-2">
               <label htmlFor="scrapedData" className="text-sm font-medium leading-none">
