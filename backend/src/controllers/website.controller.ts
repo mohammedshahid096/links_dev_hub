@@ -1,3 +1,7 @@
+import {
+  SortOrder,
+  websiteWhereInput,
+} from "./../../generated/prisma/internal/prismaNamespaceBrowser";
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../configs/prismaClient";
 import logger from "../configs/logger.config";
@@ -64,14 +68,83 @@ export const getAllWebsitesController = async (
     logger.info(
       "controller - website.controller - getAllWebsitesController - start",
     );
-    const websites = await prisma.website.findMany();
+
+    let {
+      sortBy = "desc",
+      searchTitle,
+      page = "1",
+      limit = "20",
+    }: {
+      sortBy?: SortOrder;
+      searchTitle?: string;
+      page?: string | number;
+      limit?: string | number;
+    } = req.query;
+
+    const pageNumber = Math.max(1, Number(page));
+    const limitNumber = Math.max(1, Number(limit));
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // 1. Define Filter Criteria
+    const where: websiteWhereInput = searchTitle
+      ? {
+          title: {
+            contains: searchTitle,
+            mode: "insensitive", // Case-insensitive search
+          },
+        }
+      : {};
+
+    // 2. Fetch Data and Total Count in parallel
+    const [websites, totalCount] = await Promise.all([
+      prisma.website.findMany({
+        where,
+        select: {
+          id: true,
+          url: true,
+          slug: true,
+          description: true,
+          iconUrl: true,
+          title: true,
+          imageUrl: true,
+          keywords: true,
+          tags: true,
+          sourceType: true,
+          author: true,
+          provider: true,
+          categoryId: true,
+          category: { select: { name: true } },
+        },
+        orderBy: { created_at: sortBy },
+        skip: skip,
+        take: limitNumber,
+      }),
+      prisma.website.count({ where }),
+    ]);
+
+    // 3. Pagination Logic
+    const totalPages = Math.ceil(totalCount / limitNumber);
+    const hasNext = pageNumber < totalPages;
+    const hasPrevious = pageNumber > 1;
+
+    const data = {
+      page: pageNumber,
+      limit: limitNumber,
+      totalCount,
+      totalPages,
+      hasNext,
+      hasPrevious,
+      websites,
+    };
+
     logger.info(
       "controller - website.controller - getAllWebsitesController - end",
     );
+
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
       message: "Websites fetched successfully",
-      data: websites,
+      data,
     });
   } catch (error) {
     logger.error(
@@ -103,6 +176,7 @@ export const getSingleWebsiteController = async (
     logger.info(
       "controller - website.controller - getSingleWebsiteController - end",
     );
+
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
       message: "Website fetched successfully",
