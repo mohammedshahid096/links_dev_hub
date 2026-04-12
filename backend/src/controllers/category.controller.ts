@@ -11,20 +11,20 @@ import { CategoryType } from "../types/category.type";
 export const createCategoryController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - category.controller - createCategoryController - start"
+      "controller - category.controller - createCategoryController - start",
     );
-    const { name, description = null } = req.body;
+    const { name, description = null, isActive } = req.body;
     const slug = slugify(name, { lower: true, strict: true, trim: true });
     const existingCategory = await prisma.category.findUnique({
       where: { slug },
     });
     if (existingCategory) {
       return next(
-        httpErrors.Conflict("Category with this name already exists")
+        httpErrors.Conflict("Category with this name already exists"),
       );
     }
 
@@ -32,21 +32,17 @@ export const createCategoryController = async (
       name,
       slug,
       createdBy: req.authUser?.id!,
+      isActive,
+      ...(description && { description }),
     };
-
-    // if (description) {
-    //   data.description = description;
-    // }
 
     const response = await prisma.category.create({
       data: {
-        name,
-        slug,
-        createdBy: req.authUser?.id!,
+        ...data,
       },
     });
     logger.info(
-      "controller - category.controller - createCategoryController - end"
+      "controller - category.controller - createCategoryController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 201,
@@ -56,7 +52,7 @@ export const createCategoryController = async (
   } catch (error) {
     logger.error(
       "controller - category.controller - createCategoryController - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
@@ -66,16 +62,16 @@ export const createCategoryController = async (
 export const getAllCategoriesController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - category.controller - getAllCategoriesController - start"
+      "controller - category.controller - getAllCategoriesController - start",
     );
     const categories = await prisma.category.findMany();
 
     logger.info(
-      "controller - category.controller - getAllCategoriesController - end"
+      "controller - category.controller - getAllCategoriesController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
@@ -85,7 +81,7 @@ export const getAllCategoriesController = async (
   } catch (error) {
     logger.error(
       "controller - category.controller - getAllCategoriesController - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
@@ -95,11 +91,11 @@ export const getAllCategoriesController = async (
 export const getCategoryByidController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - category.controller - getCategoryByidController - start"
+      "controller - category.controller - getCategoryByidController - start",
     );
     const { id } = req.params;
     const category = await prisma.category.findFirst({
@@ -111,7 +107,7 @@ export const getCategoryByidController = async (
       return next(httpErrors.NotFound("Category not found"));
     }
     logger.info(
-      "controller - category.controller - getCategoryByidController - end"
+      "controller - category.controller - getCategoryByidController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
@@ -121,7 +117,7 @@ export const getCategoryByidController = async (
   } catch (error) {
     logger.error(
       "controller - category.controller - getCategoryByidController - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
@@ -131,11 +127,11 @@ export const getCategoryByidController = async (
 export const updateCategoryController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - category.controller - updateCategoryController - start"
+      "controller - category.controller - updateCategoryController - start",
     );
     const { id } = req.params;
     const { name } = req.body;
@@ -152,7 +148,7 @@ export const updateCategoryController = async (
 
     if (existingCategory && existingCategory.id !== id) {
       return next(
-        httpErrors.Conflict("Category with this name already exists")
+        httpErrors.Conflict("Category with this name already exists"),
       );
     }
     const updatedCategory = await prisma.category.update({
@@ -160,7 +156,7 @@ export const updateCategoryController = async (
       data: updateDetails,
     });
     logger.info(
-      "controller - category.controller - updateCategoryController - end"
+      "controller - category.controller - updateCategoryController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
@@ -170,7 +166,7 @@ export const updateCategoryController = async (
   } catch (error) {
     logger.error(
       "controller - category.controller - updateCategoryController - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
@@ -180,18 +176,18 @@ export const updateCategoryController = async (
 export const deleteCategoryController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     logger.info(
-      "controller - category.controller - deleteCategoryController - start"
+      "controller - category.controller - deleteCategoryController - start",
     );
     const { id } = req.params;
     const deletedCategory = await prisma.category.delete({
       where: { id },
     });
     logger.info(
-      "controller - category.controller - deleteCategoryController - end"
+      "controller - category.controller - deleteCategoryController - end",
     );
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
@@ -201,7 +197,7 @@ export const deleteCategoryController = async (
   } catch (error) {
     logger.error(
       "controller - category.controller - deleteCategoryController - error",
-      error
+      error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
   }
