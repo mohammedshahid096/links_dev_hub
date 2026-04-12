@@ -88,7 +88,9 @@ export const getAllWebsitesController = async (
     const skip = (pageNumber - 1) * limitNumber;
 
     // 1. Define Filter Criteria
-    let where: websiteWhereInput = {};
+    let where: websiteWhereInput = {
+      isActive: true,
+    };
 
     if (searchTitle) {
       where.title = {
@@ -118,6 +120,7 @@ export const getAllWebsitesController = async (
           author: true,
           provider: true,
           categoryId: true,
+          isActive: true,
           category: { select: { name: true } },
         },
         orderBy: { created_at: sortBy },

@@ -6,7 +6,7 @@ import {
   CardDescription, 
   CardFooter 
 } from "@/components/ui/card";
-import { Link as LinkIcon, Plus, ExternalLink, Globe, Folder, Eye } from "lucide-react";
+import { Link as LinkIcon, Plus, ExternalLink, Globe, Folder, Eye, Edit } from "lucide-react";
 import { getAdminWebsites } from "@/api/website/admin.website";
 import { getAdminCategories } from "@/api/category/admin.category";
 import { auth } from "@clerk/nextjs/server";
@@ -119,6 +119,11 @@ export default async function WebsitesPage({
                     {website.title || website.slug}
                   </span>
                 </CardTitle>
+                <div className="flex shrink-0 ml-2 mt-0.5">
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] whitespace-nowrap font-medium border ${website.isActive ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/20" : "bg-red-50 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20"}`}>
+                    {website.isActive ? "Active" : "Inactive"}
+                  </span>
+                </div>
               </div>
             </CardHeader>
             
@@ -156,11 +161,11 @@ export default async function WebsitesPage({
             </CardContent>
             
             <CardFooter className="pt-4 border-t text-xs text-muted-foreground flex flex-none items-center justify-between bg-muted/20">
-               <div className="flex flex-wrap gap-1 overflow-hidden h-5">
+               <div className="flex flex-wrap gap-1 overflow-hidden h-5 flex-1 mr-2">
                  {website.keywords && website.keywords.length > 0 ? (
                    <>
                      {website.keywords.slice(0, 2).map((kw: string) => (
-                       <span key={kw} className="bg-muted px-2 py-0.5 rounded-sm line-clamp-1">{kw}</span>
+                       <span key={kw} className="bg-muted px-2 py-0.5 rounded-sm line-clamp-1 truncate max-w-[60px]">{kw}</span>
                      ))}
                      {website.keywords.length > 2 && (
                        <span className="px-1 text-muted-foreground opacity-70 font-medium my-auto">+{website.keywords.length - 2}</span>
@@ -170,12 +175,20 @@ export default async function WebsitesPage({
                    <span className="opacity-50 italic">No tags</span>
                  )}
                </div>
-               <Link href={`/admin/website/view/${website.slug}`}>
-                 <Button variant="ghost" size="xs" className="h-7 px-2 text-primary hover:bg-primary/10">
-                   <Eye className="w-3.5 h-3.5 mr-1" />
-                   View
-                 </Button>
-               </Link>
+               <div className="flex items-center gap-1 shrink-0">
+                 <Link href={`/admin/website/view/${website.slug}`}>
+                   <Button variant="ghost" size="xs" className="h-7 px-2 text-primary hover:bg-primary/10">
+                     <Eye className="w-3.5 h-3.5 mr-1" />
+                     <span className="hidden sm:inline">View</span>
+                   </Button>
+                 </Link>
+                 <Link href={`/admin/website/edit/${website.slug}`}>
+                   <Button variant="ghost" size="xs" className="h-7 px-2 text-primary hover:bg-primary/10">
+                     <Edit className="w-3.5 h-3.5 mr-1" />
+                     <span className="hidden sm:inline">Edit</span>
+                   </Button>
+                 </Link>
+               </div>
             </CardFooter>
           </Card>
         ))}
