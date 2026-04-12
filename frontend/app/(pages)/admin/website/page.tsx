@@ -6,8 +6,9 @@ import {
   CardDescription, 
   CardFooter 
 } from "@/components/ui/card";
-import { Link as LinkIcon, Plus, ExternalLink, Globe } from "lucide-react";
+import { Link as LinkIcon, Plus, ExternalLink, Globe, Folder } from "lucide-react";
 import { getAdminWebsites } from "@/api/website/admin.website";
+import { getAdminCategories } from "@/api/category/admin.category";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -16,25 +17,37 @@ import { WebsiteSearch } from "./_components/WebsiteSearch";
 export default async function WebsitesPage({ 
   searchParams 
 }: { 
-  searchParams: { searchTitle?: string, page?: string, limit?: string, sortBy?: string } 
+  searchParams: Promise<{ searchTitle?: string, page?: string, limit?: string, sortBy?: string, categoryId?: string }> 
 }) {
-  const { getToken } = await auth();
-  const token = await getToken();
+  const [token, resolvedParams] = await Promise.all([
+    auth().then(a => a.getToken()),
+    searchParams
+  ]);
 
-  const page = searchParams.page || "1";
-  const limit = searchParams.limit || "20";
-  const searchTitle = searchParams.searchTitle || "";
-  const sortBy = searchParams.sortBy || "desc";
+  const page = resolvedParams.page || "1";
+  const limit = resolvedParams.limit || "20";
+  const searchTitle = resolvedParams.searchTitle || "";
+  const sortBy = resolvedParams.sortBy || "desc";
+  const categoryId = resolvedParams.categoryId || "";
 
   let result: any = null;
+  let categories: any[] = [];
   let error = null;
   
   try {
-    const { success, data } = await getAdminWebsites({ page, limit, searchTitle, sortBy }, token);
-    if (!success) {
-      error = data?.message || "Failed to fetch websites";
+    const [websitesResponse, categoriesResponse] = await Promise.all([
+      getAdminWebsites({ page, limit, searchTitle, sortBy, categoryId }, token),
+      getAdminCategories(token)
+    ]);
+    
+    if (!websitesResponse.success) {
+      error = websitesResponse.data?.message || "Failed to fetch websites";
     } else {
-      result = data.data; // The paginated data object
+      result = websitesResponse.data.data; // The paginated data object
+    }
+    
+    if (categoriesResponse.success) {
+      categories = categoriesResponse.data?.data || [];
     }
   } catch (err) {
     error = "Failed to connect to the server";
@@ -49,6 +62,7 @@ export default async function WebsitesPage({
   const getPaginationUrl = (newPage: number) => {
     const params = new URLSearchParams();
     if (searchTitle) params.append("searchTitle", searchTitle);
+    if (categoryId) params.append("categoryId", categoryId);
     if (limit !== "20") params.append("limit", limit.toString());
     if (sortBy !== "desc") params.append("sortBy", sortBy.toString());
     params.append("page", newPage.toString());
@@ -68,7 +82,7 @@ export default async function WebsitesPage({
         </div>
         
         <div className="w-full md:w-auto flex flex-col sm:flex-row items-center gap-4">
-          <WebsiteSearch />
+          <WebsiteSearch categories={categories} />
           <Link href="/admin/website/add">
             <Button className="w-full md:w-auto flex items-center gap-2">
               <Plus className="w-4 h-4" />
@@ -109,16 +123,25 @@ export default async function WebsitesPage({
             </CardHeader>
             
             <CardContent className="pb-4 pt-2 flex-grow">
-              <div className="space-y-4">
-                <a 
-                  href={website.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-primary hover:underline w-fit"
-                >
-                  <ExternalLink className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate max-w-[200px]" title={website.url}>{website.url}</span>
-                </a>
+              <div className="space-y-3">
+                <div className="flex flex-col gap-2">
+                  <a 
+                    href={website.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-xs text-primary hover:underline w-fit"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                    <span className="truncate max-w-[200px]" title={website.url}>{website.url}</span>
+                  </a>
+                  
+                  {website.category?.name && (
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/40 px-2 py-1 rounded-sm w-fit border border-border/50">
+                      <Folder className="w-3 h-3" />
+                      <span className="font-medium">{website.category.name}</span>
+                    </div>
+                  )}
+                </div>
                 
                 {website.description ? (
                   <CardDescription className="line-clamp-3 text-sm">

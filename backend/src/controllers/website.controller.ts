@@ -74,11 +74,13 @@ export const getAllWebsitesController = async (
       searchTitle,
       page = "1",
       limit = "20",
+      categoryId,
     }: {
       sortBy?: SortOrder;
       searchTitle?: string;
       page?: string | number;
       limit?: string | number;
+      categoryId?: string;
     } = req.query;
 
     const pageNumber = Math.max(1, Number(page));
@@ -86,14 +88,17 @@ export const getAllWebsitesController = async (
     const skip = (pageNumber - 1) * limitNumber;
 
     // 1. Define Filter Criteria
-    const where: websiteWhereInput = searchTitle
-      ? {
-          title: {
-            contains: searchTitle,
-            mode: "insensitive", // Case-insensitive search
-          },
-        }
-      : {};
+    let where: websiteWhereInput = {};
+
+    if (searchTitle) {
+      where.title = {
+        contains: searchTitle,
+        mode: "insensitive", // Case-insensitive search
+      };
+    }
+    if (categoryId) {
+      where.categoryId = categoryId;
+    }
 
     // 2. Fetch Data and Total Count in parallel
     const [websites, totalCount] = await Promise.all([

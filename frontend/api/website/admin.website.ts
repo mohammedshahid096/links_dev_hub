@@ -5,6 +5,7 @@ export interface GetWebsitesQuery {
   searchTitle?: string;
   page?: string | number;
   limit?: string | number;
+  categoryId?: string;
 }
 
 export const getAdminWebsites = async (query: GetWebsitesQuery, token: string | null) => {
@@ -13,8 +14,10 @@ export const getAdminWebsites = async (query: GetWebsitesQuery, token: string | 
   if (query.searchTitle) queryParams.append("searchTitle", query.searchTitle);
   if (query.page) queryParams.append("page", query.page.toString());
   if (query.limit) queryParams.append("limit", query.limit.toString());
+  if (query.categoryId) queryParams.append("categoryId", query.categoryId);
 
   const queryString = queryParams.toString();
+
   const url = queryString ? `/websites?${queryString}` : "/websites";
 
   const [success, data, status] = await Service.fetchGet(url, token);
