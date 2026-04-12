@@ -88,6 +88,16 @@ export default async function WebsiteViewPage({
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
+                {website.imageUrl && (
+                  <div className="w-full overflow-hidden rounded-lg border bg-muted/10">
+                    <img 
+                      src={website.imageUrl} 
+                      alt={`${website.title || website.slug} preview`} 
+                      className="w-full object-cover max-h-[400px]"
+                    />
+                  </div>
+                )}
+                
                 {website.description && (
                   <div>
                     <h3 className="text-sm font-medium text-muted-foreground mb-2">Description</h3>
