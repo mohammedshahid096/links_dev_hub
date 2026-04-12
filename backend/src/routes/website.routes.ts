@@ -11,8 +11,13 @@ import {
   deleteWebsiteController,
   getAllWebsitesController,
   getSingleWebsiteBySlugController,
+  updateWebsiteController,
 } from "../controllers/website.controller";
-import { createWebsiteValidation } from "../validations/website.joi";
+import {
+  createWebsiteByUrlValidation,
+  createWebsiteValidation,
+  updateWebsiteValidation,
+} from "../validations/website.joi";
 
 const websiteRoutes = Router();
 
@@ -29,6 +34,12 @@ websiteRoutes.route("/slug/:slug").get(getSingleWebsiteBySlugController);
 
 websiteRoutes
   .route("/:id")
+  .put(
+    authentication,
+    authorization([roles.ADMIN]),
+    updateWebsiteValidation,
+    updateWebsiteController,
+  )
   .delete(
     authentication,
     authorization([roles.ADMIN]),
@@ -40,6 +51,7 @@ websiteRoutes
   .post(
     devAuthentication,
     authorization([roles.ADMIN]),
+    createWebsiteByUrlValidation,
     addNewWebsiteByUrlController,
   );
 

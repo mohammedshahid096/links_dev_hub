@@ -38,3 +38,8 @@ export const addWebsiteByUrl = async (payload: AddWebsiteByUrlPayload, token: st
   const [success, data, status] = await Service.fetchPost("/websites/add-by-website", payload, token || undefined);
   return { success, data, status };
 };
+
+export const updateAdminWebsite = async (id: string, payload: any, token: string | null) => {
+  const [success, data, status] = await Service.fetchPut(`/websites/${id}`, payload, token || undefined);
+  return { success, data, status };
+};

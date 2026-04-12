@@ -89,7 +89,7 @@ export const getAllWebsitesController = async (
 
     // 1. Define Filter Criteria
     let where: websiteWhereInput = {
-      isActive: true,
+      // isActive: true,
     };
 
     if (searchTitle) {
@@ -241,16 +241,16 @@ export const addNewWebsiteByUrlController = async (
       "controller - website.controller - addNewWebsiteByUrlController - start",
     );
     const { url, categoryId } = req.body;
+    let slug = url.replace(/https?:\/\//, "");
+    slug = slugify(slug, { lower: true, strict: true });
+
     const isdWebsiteExist = await prisma.website.findFirst({
-      where: { url },
+      where: { OR: [{ url }, { slug }] },
     });
 
     if (isdWebsiteExist) {
       return next(httpErrors.BadRequest("website already exist"));
     }
-
-    let slug = url.replace(/https?:\/\//, "");
-    slug = slugify(slug, { lower: true, strict: true });
 
     const metadata = await getMetaData(url);
     const details = {
@@ -280,6 +280,38 @@ export const addNewWebsiteByUrlController = async (
   } catch (error) {
     logger.error(
       "controller - website.controller - addNewWebsiteByUrlController - error",
+      error,
+    );
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};
+
+export const updateWebsiteController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    logger.info(
+      "controller - website.controller - updateWebsiteController - start",
+    );
+    const { id } = req.params;
+
+    const updatedWebsiteDetails = await prisma.website.update({
+      where: { id },
+      data: { ...req.body },
+    });
+    logger.info(
+      "controller - website.controller - updateWebsiteController - end",
+    );
+    responseHandlingUtil.successResponseStandard(res, {
+      statusCode: 200,
+      message: "website updated successfully",
+      data: updatedWebsiteDetails,
+    });
+  } catch (error) {
+    logger.error(
+      "controller - website.controller - updateWebsiteController - error",
       error,
     );
     errorHandling.handlingControllersError(error as AppError, next);
