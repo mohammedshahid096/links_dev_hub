@@ -5,6 +5,11 @@
 # Get All Categories API
 GET {{API_BASE_URL_LOCAL}}/categories
 
+
+GET {{API_BASE_URL_LOCAL}}/categories/slug/testing-4
+
+
+
 # creating a new category
 POST {{API_BASE_URL_LOCAL}}/categories
 Content-Type: application/json

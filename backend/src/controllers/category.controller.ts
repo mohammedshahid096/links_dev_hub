@@ -90,7 +90,7 @@ export const getAllCategoriesController = async (
 };
 
 // get category by id/slug controller
-export const getCategoryByidController = async (
+export const getCategoryBySlugController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -99,10 +99,10 @@ export const getCategoryByidController = async (
     logger.info(
       "controller - category.controller - getCategoryByidController - start",
     );
-    const { id } = req.params;
+    const { slug } = req.params;
     const category = await prisma.category.findFirst({
       where: {
-        id,
+        slug,
       },
     });
     if (!category) {

@@ -27,10 +27,6 @@ export const deleteAdminCategory = async (id: string | number, token: string | n
 };
 
 export const getAdminCategoryBySlug = async (slug: string, token: string | null) => {
-  const { success, data } = await getAdminCategories(token);
-  if (success && data?.data) {
-    const category = data.data.find((c: any) => c.slug === slug);
-    if (category) return { success: true, data: { data: category } };
-  }
-  return { success: false, data: { message: "Category not found" } };
+  const [success, data, status] = await Service.fetchGet(`/categories/slug/${slug}`, token || undefined);
+  return { success, data, status };
 };

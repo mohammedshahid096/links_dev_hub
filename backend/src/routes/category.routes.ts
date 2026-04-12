@@ -4,7 +4,7 @@ import {
   createCategoryController,
   deleteCategoryController,
   getAllCategoriesController,
-  getCategoryByidController,
+  getCategoryBySlugController,
   updateCategoryController,
 } from "../controllers/category.controller";
 import { roles } from "../constants/index.constants";
@@ -25,9 +25,10 @@ categoryRoutes
     createCategoryController,
   );
 
+categoryRoutes.route("/slug/:slug").get(getCategoryBySlugController);
+
 categoryRoutes
   .route("/:id")
-  .get(getCategoryByidController)
   .put(
     authentication,
     authorization([roles.ADMIN]),
