@@ -6,10 +6,11 @@ import {
   CardDescription, 
   CardFooter 
 } from "@/components/ui/card";
-import { Folder, Calendar, Tag, CheckCircle2, XCircle } from "lucide-react";
+import { Folder, Calendar, Tag, CheckCircle2, XCircle, Plus } from "lucide-react";
 import { getAdminCategories } from "@/api/category/admin.category";
-import { AddCategoryForm } from "./_components/AddCategoryForm";
 import { auth } from "@clerk/nextjs/server";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function CategoriesPage() {
   const { getToken } = await auth();
@@ -41,7 +42,12 @@ export default async function CategoriesPage() {
           </p>
         </div>
         <div className="w-full md:w-auto">
-          <AddCategoryForm />
+          <Link href="/admin/category/add">
+            <Button className="w-full md:w-auto flex items-center gap-2">
+              <Plus className="w-4 h-4" />
+              Add Category
+            </Button>
+          </Link>
         </div>
       </div>
 

@@ -7,6 +7,8 @@ export const getAdminCategories = async (token: string | null) => {
 
 export interface CreateCategoryPayload {
   name: string;
+  description?: string;
+  isActive?: boolean;
 }
 
 export const createAdminCategory = async (payload: CreateCategoryPayload, token: string | null) => {
