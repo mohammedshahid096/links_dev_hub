@@ -6,7 +6,7 @@ import {
   CardDescription, 
   CardFooter 
 } from "@/components/ui/card";
-import { Folder, Calendar, Tag, CheckCircle2, XCircle, Plus } from "lucide-react";
+import { Folder, Calendar, Tag, CheckCircle2, XCircle, Plus, Edit2 } from "lucide-react";
 import { getAdminCategories } from "@/api/category/admin.category";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
@@ -123,6 +123,12 @@ export default async function CategoriesPage() {
                    day: 'numeric'
                  })}
                </div>
+               <Link href={`/admin/category/edit/${category.slug}`}>
+                 <Button variant="ghost" size="xs" className="h-7 px-2 text-primary hover:bg-primary/10">
+                   <Edit2 className="w-3.5 h-3.5 mr-1" />
+                   Edit
+                 </Button>
+               </Link>
             </CardFooter>
           </Card>
         ))}

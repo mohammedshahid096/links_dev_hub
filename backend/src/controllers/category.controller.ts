@@ -68,7 +68,9 @@ export const getAllCategoriesController = async (
     logger.info(
       "controller - category.controller - getAllCategoriesController - start",
     );
-    const categories = await prisma.category.findMany();
+    const categories = await prisma.category.findMany({
+      orderBy: { created_at: "desc" },
+    });
 
     logger.info(
       "controller - category.controller - getAllCategoriesController - end",
@@ -136,7 +138,6 @@ export const updateCategoryController = async (
     const { id } = req.params;
     const { name } = req.body;
     let existingCategory = null;
-    let slug = null;
     let updateDetails: Partial<CategoryType> = { ...req.body };
     if (name) {
       const slug = slugify(name, { lower: true, strict: true, trim: true });
