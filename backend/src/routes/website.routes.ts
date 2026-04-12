@@ -10,7 +10,7 @@ import {
   createWebsiteController,
   deleteWebsiteController,
   getAllWebsitesController,
-  getSingleWebsiteController,
+  getSingleWebsiteBySlugController,
 } from "../controllers/website.controller";
 import { createWebsiteValidation } from "../validations/website.joi";
 
@@ -25,10 +25,10 @@ websiteRoutes
     createWebsiteValidation,
     createWebsiteController,
   );
+websiteRoutes.route("/slug/:slug").get(getSingleWebsiteBySlugController);
 
 websiteRoutes
   .route("/:id")
-  .get(getSingleWebsiteController)
   .delete(
     authentication,
     authorization([roles.ADMIN]),

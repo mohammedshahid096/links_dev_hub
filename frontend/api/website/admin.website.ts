@@ -23,3 +23,8 @@ export const getAdminWebsites = async (query: GetWebsitesQuery, token: string | 
   const [success, data, status] = await Service.fetchGet(url, token);
   return { success, data, status };
 };
+
+export const getAdminWebsiteBySlug = async (slug: string, token: string | null) => {
+  const [success, data, status] = await Service.fetchGet(`/websites/slug/${slug}`, token);
+  return { success, data, status };
+};

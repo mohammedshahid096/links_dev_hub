@@ -161,7 +161,7 @@ export const getAllWebsitesController = async (
 };
 
 // get single website controller
-export const getSingleWebsiteController = async (
+export const getSingleWebsiteBySlugController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -170,9 +170,10 @@ export const getSingleWebsiteController = async (
     logger.info(
       "controller - website.controller - getSingleWebsiteController - start",
     );
-    const { id } = req.params;
+    const { slug } = req.params;
     const website = await prisma.website.findUnique({
-      where: { id },
+      where: { slug },
+      include: { category: true },
     });
 
     if (!website) {

@@ -6,7 +6,7 @@ import {
   CardDescription, 
   CardFooter 
 } from "@/components/ui/card";
-import { Link as LinkIcon, Plus, ExternalLink, Globe, Folder } from "lucide-react";
+import { Link as LinkIcon, Plus, ExternalLink, Globe, Folder, Eye } from "lucide-react";
 import { getAdminWebsites } from "@/api/website/admin.website";
 import { getAdminCategories } from "@/api/category/admin.category";
 import { auth } from "@clerk/nextjs/server";
@@ -170,6 +170,12 @@ export default async function WebsitesPage({
                    <span className="opacity-50 italic">No tags</span>
                  )}
                </div>
+               <Link href={`/admin/website/view/${website.slug}`}>
+                 <Button variant="ghost" size="xs" className="h-7 px-2 text-primary hover:bg-primary/10">
+                   <Eye className="w-3.5 h-3.5 mr-1" />
+                   View
+                 </Button>
+               </Link>
             </CardFooter>
           </Card>
         ))}
