@@ -28,3 +28,13 @@ export const getAdminWebsiteBySlug = async (slug: string, token: string | null) 
   const [success, data, status] = await Service.fetchGet(`/websites/slug/${slug}`, token);
   return { success, data, status };
 };
+
+export interface AddWebsiteByUrlPayload {
+  url: string;
+  categoryId: string;
+}
+
+export const addWebsiteByUrl = async (payload: AddWebsiteByUrlPayload, token: string | null) => {
+  const [success, data, status] = await Service.fetchPost("/websites/add-by-website", payload, token || undefined);
+  return { success, data, status };
+};
