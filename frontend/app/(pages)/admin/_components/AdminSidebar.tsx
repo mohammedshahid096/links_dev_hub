@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { 
   Folder, 
@@ -122,6 +123,16 @@ export function AdminSidebar() {
             )}
           </div>
         ))}
+      </div>
+
+      <div className="p-4 border-t border-border/50 mt-auto">
+        <div className="flex items-center gap-3 px-3 py-2">
+          <UserButton afterSignOutUrl="/" />
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-medium truncate text-foreground">User Profile</span>
+            <span className="text-[10px] text-muted-foreground truncate uppercase font-semibold tracking-wider">Sign Out / Account</span>
+          </div>
+        </div>
       </div>
     </aside>
   );

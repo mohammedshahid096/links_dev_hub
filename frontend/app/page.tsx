@@ -1,5 +1,6 @@
 import { ArrowRight, Github, Globe, Star, Search, Layers, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -24,13 +25,24 @@ export default function Home() {
           </Link>
         </nav>
         <div className="flex items-center gap-4">
-          <Link 
-            href="/admin/website" 
-            className="flex items-center gap-2 text-sm font-medium bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 shadow-sm"
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            <span className="hidden sm:inline">Admin Dashboard</span>
-          </Link>
+          <SignedIn>
+            <Link 
+              href="/admin/website" 
+              className="flex items-center gap-2 text-sm font-medium bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 shadow-sm"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              <span className="hidden sm:inline">Admin Dashboard</span>
+            </Link>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+          <SignedOut>
+            <Link 
+              href="/sign-in" 
+              className="flex items-center gap-2 text-sm font-medium border border-primary/20 bg-primary/5 text-primary px-5 py-2.5 rounded-full hover:bg-primary/10 transition-all hover:scale-105 active:scale-95 shadow-sm"
+            >
+              Sign In
+            </Link>
+          </SignedOut>
         </div>
       </header>
 
