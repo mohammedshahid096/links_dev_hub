@@ -1,4 +1,3 @@
-import { createHashPassword } from "./../src/utils/bycrypt.util";
 import { prisma } from "../src/configs/prismaClient";
 import { Provider, Role } from "../generated/prisma/enums";
 import slugify from "slugify";
