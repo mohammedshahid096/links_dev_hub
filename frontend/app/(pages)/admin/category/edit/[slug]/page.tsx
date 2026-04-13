@@ -2,30 +2,37 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { 
-  getAdminCategoryBySlug, 
-  updateAdminCategory, 
-  deleteAdminCategory 
+import {
+  getAdminCategoryBySlug,
+  updateAdminCategory,
+  deleteAdminCategory,
 } from "@/api/category/admin.category";
 import { Loader2, ArrowLeft, Trash2 } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import Link from "next/link";
 
 export default function EditCategoryPage() {
   const { slug } = useParams() as { slug: string };
-  
+
   const [categoryId, setCategoryId] = useState<string | number | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(true);
-  
+
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const router = useRouter();
   const { getToken } = useAuth();
 
@@ -34,7 +41,7 @@ export default function EditCategoryPage() {
       try {
         const token = await getToken();
         const { success, data } = await getAdminCategoryBySlug(slug, token);
-        
+
         if (success && data?.data) {
           setCategoryId(data.data.id);
           setName(data.data.name || "");
@@ -49,7 +56,7 @@ export default function EditCategoryPage() {
         setFetching(false);
       }
     };
-    
+
     if (slug) fetchCategory();
   }, [slug, getToken]);
 
@@ -62,12 +69,16 @@ export default function EditCategoryPage() {
 
     try {
       const token = await getToken();
-      const { success, data } = await updateAdminCategory(categoryId, { 
-        name: name.trim(),
-        description: description.trim() || undefined,
-        isActive
-      }, token);
-      
+      const { success, data } = await updateAdminCategory(
+        categoryId,
+        {
+          name: name.trim(),
+          description: description.trim() || undefined,
+          isActive,
+        },
+        token,
+      );
+
       if (success) {
         router.push("/admin/category");
         router.refresh();
@@ -83,17 +94,19 @@ export default function EditCategoryPage() {
 
   const handleDelete = async () => {
     if (!categoryId) return;
-    
-    const confirmDelete = window.confirm("Are you sure you want to delete this category? This action cannot be undone.");
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category? This action cannot be undone.",
+    );
     if (!confirmDelete) return;
 
     setDeleting(true);
     setError(null);
-    
+
     try {
       const token = await getToken();
       const { success, data } = await deleteAdminCategory(categoryId, token);
-      
+
       if (success) {
         router.push("/admin/category");
         router.refresh();
@@ -111,22 +124,29 @@ export default function EditCategoryPage() {
     return (
       <div className="container mx-auto p-4 md:p-8 flex items-center justify-center min-h-[400px]">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        <span className="ml-3 text-muted-foreground">Loading category details...</span>
+        <span className="ml-3 text-muted-foreground">
+          Loading category details...
+        </span>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-2xl animate-in fade-in duration-500">
-      <Link href="/admin/category" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+      <Link
+        href="/admin/category"
+        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+      >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Categories
       </Link>
-      
+
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Edit Category</CardTitle>
-          <CardDescription>Update your category details or remove it</CardDescription>
+          <CardDescription>
+            Update your category details or remove it
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-6">
@@ -135,9 +155,12 @@ export default function EditCategoryPage() {
                 {error}
               </div>
             )}
-            
+
             <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <label
+                htmlFor="name"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
                 Category Name <span className="text-rose-500">*</span>
               </label>
               <input
@@ -153,7 +176,10 @@ export default function EditCategoryPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="description" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <label
+                htmlFor="description"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
                 Description
               </label>
               <textarea
@@ -177,9 +203,9 @@ export default function EditCategoryPage() {
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  className="sr-only peer" 
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
                   disabled={loading || deleting}
@@ -188,7 +214,7 @@ export default function EditCategoryPage() {
               </label>
             </div>
           </CardContent>
-          
+
           <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t mt-4 bg-muted/10">
             <Button
               type="button"
@@ -197,10 +223,14 @@ export default function EditCategoryPage() {
               disabled={loading || deleting || !categoryId}
               className="w-full sm:w-auto"
             >
-              {deleting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
+              {deleting ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Trash2 className="w-4 h-4 mr-2" />
+              )}
               {deleting ? "Deleting..." : "Delete Category"}
             </Button>
-            
+
             <div className="flex gap-3 w-full sm:w-auto mt-4 sm:mt-0">
               <Button
                 type="button"
@@ -216,7 +246,9 @@ export default function EditCategoryPage() {
                 disabled={loading || deleting || !name.trim() || !categoryId}
                 className="w-full sm:w-auto min-w-[140px]"
               >
-                {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                {loading ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : null}
                 {loading ? "Updating..." : "Update Category"}
               </Button>
             </div>

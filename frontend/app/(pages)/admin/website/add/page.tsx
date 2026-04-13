@@ -24,7 +24,10 @@ export default async function AddWebsitePage() {
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-2xl animate-in fade-in duration-500 pb-20">
-      <Link href="/admin/website" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+      <Link
+        href="/admin/website"
+        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+      >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Websites
       </Link>
@@ -32,7 +35,9 @@ export default async function AddWebsitePage() {
       {error ? (
         <div className="bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 p-4 rounded-lg mb-8 border border-rose-200 dark:border-rose-500/20">
           <p className="font-semibold mb-1">Warning</p>
-          <p className="text-sm">{error}. You will not be able to select a category.</p>
+          <p className="text-sm">
+            {error}. You will not be able to select a category.
+          </p>
         </div>
       ) : null}
 
