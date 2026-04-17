@@ -5,6 +5,7 @@ import { FeaturesHero } from "@/components/home/features-hero";
 import { LatestWebsites } from "@/components/home/latest-websites";
 import { CTAHero } from "@/components/home/cta-hero";
 import { Footer } from "@/components/home/footer";
+import { Header } from "@/components/layout/header";
 
 export default function Home() {
   return (
@@ -14,41 +15,8 @@ export default function Home() {
       <div className="fixed top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent z-50" />
       
       {/* Navbar */}
-      <header className="container mx-auto px-4 py-6 flex items-center justify-between relative z-50 animate-in fade-in duration-500">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
-            <Layers className="w-5 h-5 text-primary" />
-          </div>
-          <span className="font-bold text-xl tracking-tight">Links Dev Hub</span>
-        </div>
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <Link href="/websites" className="hover:text-foreground transition-colors">Websites</Link>
-          <Link href="/categories" className="hover:text-foreground transition-colors">Categories</Link>
-          <Link href="/watchlist" className="hover:text-foreground transition-colors flex items-center gap-1">
-            <Star className="w-3.5 h-3.5" /> Watchlist
-          </Link>
-        </nav>
-        <div className="flex items-center gap-4">
-          <SignedIn>
-            <Link 
-              href="/admin/website" 
-              className="flex items-center gap-2 text-sm font-medium bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 shadow-sm"
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span className="hidden sm:inline">Admin Dashboard</span>
-            </Link>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
-          <SignedOut>
-            <Link 
-              href="/sign-in" 
-              className="flex items-center gap-2 text-sm font-medium border border-primary/20 bg-primary/5 text-primary px-5 py-2.5 rounded-full hover:bg-primary/10 transition-all hover:scale-105 active:scale-95 shadow-sm"
-            >
-              Sign In
-            </Link>
-          </SignedOut>
-        </div>
-      </header>
+      {/* Navbar */}
+      <Header />
 
       <main>
         {/* Hero Section */}

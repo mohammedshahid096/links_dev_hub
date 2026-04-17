@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Globe, ExternalLink, Folder } from "lucide-react";
 import { WebsiteFilters } from "./_components/website-filters";
 import { WebsitePagination } from "./_components/website-pagination";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/home/footer";
 
 export default async function WebsitesPage({ 
   searchParams 
@@ -46,8 +48,12 @@ export default async function WebsitesPage({
   const totalCount = websitesData?.totalCount || 0;
 
   return (
-    <div className="container mx-auto px-4 py-12 lg:py-20 animate-in fade-in duration-500 min-h-[80vh]">
-      <div className="mb-10">
+    <div className="min-h-screen bg-background selection:bg-primary/30">
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
+      <div className="fixed top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent z-50" />
+      <Header />
+      <main className="container mx-auto px-4 py-12 lg:py-20 animate-in fade-in duration-500 min-h-[80vh]">
+        <div className="mb-10">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground mb-4">
           Explore <span className="text-primary">Websites</span>
         </h1>
@@ -150,6 +156,8 @@ export default async function WebsitesPage({
           </div>
         </div>
       )}
+      </main>
+      <Footer />
     </div>
   )
 }
