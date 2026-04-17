@@ -15,6 +15,7 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
   const currentCategory = searchParams.get("categoryId") || "";
   const initialSearch = searchParams.get("searchTitle") || "";
   const currentSort = searchParams.get("sortBy") || "desc";
+  const currentLimit = searchParams.get("limit") || "12";
 
   const [searchTerm, setSearchTerm] = useState(initialSearch);
 
@@ -122,6 +123,27 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
           >
             Oldest First
           </button>
+        </div>
+      </div>
+
+      {/* Limit List */}
+      <div className="space-y-3">
+        <Label>Results per page</Label>
+        <div className="flex gap-2">
+          {["12", "24", "48"].map((limitValue) => (
+            <button
+              key={limitValue}
+              onClick={() => updateUrl("limit", limitValue)}
+              className={cn(
+                "flex-1 px-3 py-1.5 rounded-md transition-colors text-sm font-medium border border-border/50",
+                currentLimit === limitValue
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "hover:bg-muted text-muted-foreground hover:text-foreground bg-card"
+              )}
+            >
+              {limitValue}
+            </button>
+          ))}
         </div>
       </div>
     </div>
