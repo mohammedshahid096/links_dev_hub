@@ -34,7 +34,7 @@ export function CTAHero() {
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
-              <Link href="/explore" className="w-full sm:w-auto">
+              <Link href="/websites" className="w-full sm:w-auto">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 text-lg font-medium border-white/20 hover:bg-white/10 text-white transition-all">
                   Browse Resources
                 </Button>

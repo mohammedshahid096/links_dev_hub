@@ -22,7 +22,7 @@ export default function Home() {
           <span className="font-bold text-xl tracking-tight">Links Dev Hub</span>
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <Link href="/explore" className="hover:text-foreground transition-colors">Explore</Link>
+          <Link href="/websites" className="hover:text-foreground transition-colors">Websites</Link>
           <Link href="/categories" className="hover:text-foreground transition-colors">Categories</Link>
           <Link href="/watchlist" className="hover:text-foreground transition-colors flex items-center gap-1">
             <Star className="w-3.5 h-3.5" /> Watchlist
@@ -73,7 +73,7 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
               <Link 
-                href="/explore" 
+                href="/websites" 
                 className="flex items-center justify-center gap-2 w-full sm:w-auto h-14 px-8 rounded-full bg-primary text-primary-foreground font-medium text-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_-10px_var(--tw-shadow-color)] shadow-primary"
               >
                 <Search className="w-5 h-5" />

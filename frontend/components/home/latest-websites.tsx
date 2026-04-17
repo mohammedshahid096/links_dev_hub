@@ -30,7 +30,7 @@ export async function LatestWebsites() {
               Stay updated with the latest tools and websites curated by our community.
             </p>
           </div>
-          <Link href="/explore">
+          <Link href="/websites">
             <Button variant="ghost" className="group">
               View All Resources
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
