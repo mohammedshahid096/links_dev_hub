@@ -14,6 +14,7 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
 
   const currentCategory = searchParams.get("categoryId") || "";
   const initialSearch = searchParams.get("searchTitle") || "";
+  const currentSort = searchParams.get("sortBy") || "desc";
 
   const [searchTerm, setSearchTerm] = useState(initialSearch);
 
@@ -93,6 +94,34 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
               {category.name}
             </button>
           ))}
+        </div>
+      </div>
+      {/* Sort By List */}
+      <div className="space-y-3">
+        <Label>Sort By</Label>
+        <div className="space-y-1.5 flex flex-col">
+          <button
+            onClick={() => updateUrl("sortBy", "desc")}
+            className={cn(
+              "text-left px-3 py-2 rounded-md transition-colors text-sm font-medium",
+              currentSort === "desc"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Newest First
+          </button>
+          <button
+            onClick={() => updateUrl("sortBy", "asc")}
+            className={cn(
+              "text-left px-3 py-2 rounded-md transition-colors text-sm font-medium",
+              currentSort === "asc"
+                ? "bg-primary text-primary-foreground"
+                : "hover:bg-muted text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Oldest First
+          </button>
         </div>
       </div>
     </div>

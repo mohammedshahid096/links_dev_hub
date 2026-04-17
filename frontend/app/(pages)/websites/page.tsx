@@ -10,14 +10,14 @@ import { Footer } from "@/components/home/footer";
 export default async function WebsitesPage({ 
   searchParams 
 }: { 
-  searchParams: Promise<{ searchTitle?: string, page?: string, categoryId?: string }> 
+  searchParams: Promise<{ searchTitle?: string, page?: string, categoryId?: string, sortBy?: string }> 
 }) {
   const resolvedParams = await searchParams;
   const page = resolvedParams.page || "1";
   const limit = "12";
   const searchTitle = resolvedParams.searchTitle || "";
   const categoryId = resolvedParams.categoryId || "";
-  const sortBy = "desc";
+  const sortBy = resolvedParams.sortBy || "desc";
 
   let websitesData: any = null;
   let categories: any[] = [];
