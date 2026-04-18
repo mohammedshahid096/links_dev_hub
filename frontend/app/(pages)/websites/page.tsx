@@ -102,7 +102,10 @@ export default async function WebsitesPage({
                             <Globe className="w-4 h-4 text-primary" />
                           </div>
                         )}
-                        <CardTitle className="text-base font-bold line-clamp-1 group-hover:text-primary transition-colors">
+                        <CardTitle 
+                          className="text-base font-bold line-clamp-1 group-hover:text-primary transition-colors"
+                          title={website.title || website.slug}
+                        >
                           {website.title || website.slug}
                         </CardTitle>
                       </div>
