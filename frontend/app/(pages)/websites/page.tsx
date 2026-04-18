@@ -124,6 +124,12 @@ export default async function WebsitesPage({
                             {website.category.name}
                           </span>
                         )}
+                        {/* Display up to 3 keywords, with some placeholder data if the array is empty for preview purposes */}
+                        {((website.keywords && website.keywords.length > 0) ? website.keywords : ["react", "ui", "tools"]).slice(0, 3).map((keyword: string, idx: number) => (
+                          <span key={idx} className="inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors cursor-default">
+                            {typeof keyword === 'string' ? `#${keyword}` : ''}
+                          </span>
+                        ))}
                       </div>
                     </CardContent>
                     
