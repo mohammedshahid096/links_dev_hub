@@ -2,6 +2,7 @@ import { getPublicWebsites } from "@/api/website/public.website";
 import { getPublicCategories } from "@/api/category/public.category";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Globe, ExternalLink, Folder } from "lucide-react";
+import Link from "next/link";
 import { WebsiteFilters } from "./_components/website-filters";
 import { WebsitePagination } from "./_components/website-pagination";
 import { ShareButton } from "./_components/share-button";
@@ -94,7 +95,7 @@ export default async function WebsitesPage({
                     className="group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/60 backdrop-blur-sm flex flex-col h-full overflow-hidden"
                   >
                     <CardHeader className="pb-3 flex-none">
-                      <div className="flex items-center gap-3">
+                      <Link href={`/websites/${website.slug}`} className="flex items-center gap-3">
                         {website.iconUrl ? (
                           <img src={website.iconUrl} alt="" className="w-8 h-8 rounded-lg object-cover bg-muted border border-border/50" />
                         ) : (
@@ -108,10 +109,12 @@ export default async function WebsitesPage({
                         >
                           {website.title || website.slug}
                         </CardTitle>
-                      </div>
+                      </Link>
                     </CardHeader>
                     
-                    <CardContent className="pb-4 flex-grow">
+                    <CardContent className="pb-4 flex-grow relative">
+                      <Link href={`/websites/${website.slug}`} className="absolute inset-0 z-0" />
+                      <div className="relative z-10 pointer-events-none">
                       {website.description ? (
                         <CardDescription className="line-clamp-2 text-sm leading-relaxed">
                           {website.description}
@@ -136,6 +139,7 @@ export default async function WebsitesPage({
                           </span>
                         ))}
                       </div>
+                        </div>
                     </CardContent>
                     
                     <CardFooter className="pt-4 border-t border-border/50 bg-muted/20 mt-auto">
