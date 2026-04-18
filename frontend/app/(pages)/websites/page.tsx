@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Globe, ExternalLink, Folder } from "lucide-react";
 import { WebsiteFilters } from "./_components/website-filters";
 import { WebsitePagination } from "./_components/website-pagination";
+import { ShareButton } from "./_components/share-button";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/home/footer";
 
@@ -134,15 +135,21 @@ export default async function WebsitesPage({
                     </CardContent>
                     
                     <CardFooter className="pt-4 border-t border-border/50 bg-muted/20 mt-auto">
-                      <a 
-                        href={website.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="w-full flex items-center justify-between text-xs font-medium text-muted-foreground hover:text-primary transition-colors"
-                      >
+                      <div className="w-full flex items-center justify-between text-xs font-medium text-muted-foreground">
                         <span className="truncate max-w-[150px]">{new URL(website.url).hostname}</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                        <div className="flex items-center gap-3">
+                          <ShareButton url={website.url} title={website.title} />
+                          <a 
+                            href={website.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="hover:text-primary transition-colors flex items-center justify-center p-1"
+                            title="Visit Website"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        </div>
+                      </div>
                     </CardFooter>
                   </Card>
                 ))}
