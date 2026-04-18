@@ -30,7 +30,7 @@ export function ShareButton({ url, title, className }: { url: string, title?: st
     <button 
       onClick={handleShare}
       title="Share Website"
-      className={`hover:text-primary transition-colors flex items-center justify-center ${className || ''}`}
+      className={`hover:text-primary transition-colors flex items-center justify-center p-1 rounded-md ${className || ''}`}
     >
       {copied ? <Check className="w-3.5 h-3.5" /> : <Share2 className="w-3.5 h-3.5" />}
     </button>

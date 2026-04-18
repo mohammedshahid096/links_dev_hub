@@ -5,6 +5,7 @@ import { Globe, ExternalLink, Folder } from "lucide-react";
 import { WebsiteFilters } from "./_components/website-filters";
 import { WebsitePagination } from "./_components/website-pagination";
 import { ShareButton } from "./_components/share-button";
+import { CopyButton } from "./_components/copy-button";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/home/footer";
 
@@ -137,8 +138,9 @@ export default async function WebsitesPage({
                     <CardFooter className="pt-4 border-t border-border/50 bg-muted/20 mt-auto">
                       <div className="w-full flex items-center justify-between text-xs font-medium text-muted-foreground">
                         <span className="truncate max-w-[150px]">{new URL(website.url).hostname}</span>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                           <ShareButton url={website.url} title={website.title} />
+                          <CopyButton url={website.url} />
                           <a 
                             href={website.url} 
                             target="_blank" 
