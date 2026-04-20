@@ -20,6 +20,13 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Category } from "@/types/admin/category.type";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin — Categories",
+  description: "Manage all categories on the DevHub platform. Add, edit, or toggle the visibility of categories used to organise developer resources.",
+  robots: { index: false, follow: false },
+};
 
 export default async function CategoriesPage() {
   const { getToken } = await auth();

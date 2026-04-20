@@ -6,6 +6,49 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ShareButton } from "../_components/share-button";
 import { CopyButton } from "../_components/copy-button";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const response = await getPublicWebsiteBySlug(slug);
+
+  if (!response.success || !response.data?.data) {
+    return {
+      title: "Website Not Found",
+      description: "The website you're looking for doesn't exist or has been removed.",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const website = response.data.data;
+  const title = website.title || slug;
+  const description =
+    website.description ||
+    `Explore ${title} on DevHub — your curated developer resource hub.`;
+
+  return {
+    title,
+    description,
+    keywords: website.keywords ?? [],
+    openGraph: {
+      title: `${title} — DevHub`,
+      description,
+      url: `https://devhub.app/websites/${slug}`,
+      ...(website.imageUrl ? { images: [{ url: website.imageUrl }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} — DevHub`,
+      description,
+      ...(website.imageUrl ? { images: [website.imageUrl] } : {}),
+    },
+  };
+}
+
 
 export default async function WebsiteDetailsPage({
   params

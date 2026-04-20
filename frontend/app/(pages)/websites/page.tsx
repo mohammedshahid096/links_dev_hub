@@ -9,6 +9,21 @@ import { ShareButton } from "./_components/share-button";
 import { CopyButton } from "./_components/copy-button";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/home/footer";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Explore Websites",
+  description:
+    "Browse our curated collection of essential developer resources, tools, portfolios, and GitHub repositories. Filter by category, search by name, and discover your next favourite dev tool.",
+  keywords: ["developer websites", "dev tools", "programming resources", "developer catalog", "tech links"],
+  openGraph: {
+    title: "Explore Developer Websites — DevHub",
+    description:
+      "Browse our curated collection of essential developer resources, tools and portfolios.",
+    url: "https://devhub.app/websites",
+  },
+};
+
 
 export default async function WebsitesPage({ 
   searchParams 

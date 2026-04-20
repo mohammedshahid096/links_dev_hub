@@ -2,6 +2,14 @@ import Link from 'next/link'
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/home/footer"
 import { SearchX, Home, ArrowLeft } from 'lucide-react'
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "404 — Page Not Found",
+  description: "We couldn't find the page you were looking for. Head back to DevHub and explore developer tools and resources.",
+  robots: { index: false, follow: false },
+};
+
 
 export default function NotFound() {
   return (

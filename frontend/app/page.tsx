@@ -6,6 +6,20 @@ import { CTAHero } from "@/components/home/cta-hero";
 import { Footer } from "@/components/home/footer";
 import { Header } from "@/components/layout/header";
 import { HeroDecorativeUI } from "@/components/home/hero-decorative-ui";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "DevHub — Your Ultimate Developer Watchlist",
+  description:
+    "Discover, save, and organise essential developer websites and top-tier GitHub repositories. Create your personalised developer toolkit and never lose an important dev link again.",
+  openGraph: {
+    title: "DevHub — Your Ultimate Developer Watchlist",
+    description:
+      "Your one-stop hub for curating the best developer tools, websites, and GitHub repositories.",
+    url: "https://devhub.app",
+  },
+};
+
 
 export default function Home() {
   return (
