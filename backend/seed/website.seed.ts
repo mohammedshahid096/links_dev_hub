@@ -99,6 +99,7 @@ const websitesList = [
   { title: "Shortcuts.design", url: "http://shortcuts.design" },
   { title: "Magic UI", url: "https://magicui.design/" },
   { title: "React Icons", url: "https://react-icons.github.io/react-icons/" },
+  { title: "AWESOME DESIGN.md", url: "https://getdesign.md" },
 ];
 class WebsiteSeedingService {
   constructor() {}
