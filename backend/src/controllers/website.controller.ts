@@ -317,3 +317,36 @@ export const updateWebsiteController = async (
     errorHandling.handlingControllersError(error as AppError, next);
   }
 };
+
+export const getAllWebsiteNamesController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    logger.info(
+      "controller - website.controller - getAllWebsiteNamesController - start",
+    );
+
+    const updatedWebsiteDetails = await prisma.website.findMany({
+      select: {
+        id: true,
+        title: true,
+      },
+    });
+    logger.info(
+      "controller - website.controller - getAllWebsiteNamesController - end",
+    );
+    responseHandlingUtil.successResponseStandard(res, {
+      statusCode: 200,
+      message: "website updated successfully",
+      data: updatedWebsiteDetails,
+    });
+  } catch (error) {
+    logger.error(
+      "controller - website.controller - getAllWebsiteNamesController - error",
+      error,
+    );
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};

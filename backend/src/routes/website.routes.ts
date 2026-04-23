@@ -9,6 +9,7 @@ import {
   addNewWebsiteByUrlController,
   createWebsiteController,
   deleteWebsiteController,
+  getAllWebsiteNamesController,
   getAllWebsitesController,
   getSingleWebsiteBySlugController,
   updateWebsiteController,
@@ -49,10 +50,18 @@ websiteRoutes
 websiteRoutes
   .route("/add-by-website")
   .post(
-    devAuthentication,
+    authentication,
     authorization([roles.ADMIN]),
     createWebsiteByUrlValidation,
     addNewWebsiteByUrlController,
+  );
+
+websiteRoutes
+  .route("/all-titiles")
+  .get(
+    devAuthentication,
+    authorization([roles.ADMIN]),
+    getAllWebsiteNamesController,
   );
 
 export default websiteRoutes;

@@ -54,17 +54,17 @@ const navigation = [
     ]
   },
   {
-    title: "GitHub Paths",
+    title: "GitHub Repos",
     icon: Github,
     items: [
       {
-        title: "GitHub List",
-        href: "/admin/github",
+        title: "Repo List",
+        href: "/admin/github-repos",
         icon: Github,
       },
       {
-        title: "Add New GitHub",
-        href: "/admin/github/add",
+        title: "Add by Link",
+        href: "/admin/github-repos/add",
         icon: Plus,
       }
     ]

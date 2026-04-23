@@ -26,7 +26,7 @@ githubRepoRoutes
     createGithubRepoController,
   );
 githubRepoRoutes
-  .route("/by-link")
+  .route("/add-by-link")
   .post(
     authentication,
     authorization([roles.ADMIN]),

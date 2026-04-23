@@ -8,6 +8,18 @@ export interface GetWebsitesQuery {
   categoryId?: string;
 }
 
+export interface WebsiteTitle {
+  id: string;
+  title: string;
+}
+
+export interface WebsiteTitlesResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: WebsiteTitle[];
+}
+
 export const getAdminWebsites = async (query: GetWebsitesQuery, token: string | null) => {
   const queryParams = new URLSearchParams();
   if (query.sortBy) queryParams.append("sortBy", query.sortBy);
@@ -41,5 +53,13 @@ export const addWebsiteByUrl = async (payload: AddWebsiteByUrlPayload, token: st
 
 export const updateAdminWebsite = async (id: string, payload: any, token: string | null) => {
   const [success, data, status] = await Service.fetchPut(`/websites/${id}`, payload, token || undefined);
+  return { success, data, status };
+};
+
+export const getAllWebsiteTitles = async (token: string | null) => {
+  const [success, data, status] = await Service.fetchGet<WebsiteTitlesResponse>(
+    "/websites/all-titiles",
+    token
+  );
   return { success, data, status };
 };

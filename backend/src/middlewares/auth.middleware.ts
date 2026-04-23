@@ -121,7 +121,7 @@ export const devAuthentication = async (
     }
 
     let userExist = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: userId, role: "admin" },
       select: {
         id: true,
         name: true,
