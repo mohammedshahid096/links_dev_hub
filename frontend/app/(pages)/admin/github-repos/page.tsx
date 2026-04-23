@@ -1,4 +1,4 @@
-import { Github, Plus, ExternalLink, Globe, Trash2 } from "lucide-react";
+import { Github, Plus, ExternalLink, Globe, Trash2, Code2, Tag } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server";
@@ -11,6 +11,7 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export const metadata = {
   title: "GitHub Repositories | Admin",
@@ -66,38 +67,69 @@ export default async function GithubReposPage() {
       {repos.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {repos.map((repo) => (
-            <Card key={repo.id} className="group hover:shadow-md transition-all duration-300 border-border/50">
+            <Card key={repo.id} className="group hover:shadow-md transition-all duration-300 border-border/50 flex flex-col h-full bg-card">
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg font-bold flex items-center gap-2 line-clamp-1">
-                   <Github className="w-4 h-4 text-muted-foreground" />
-                   <span className="truncate">{repo.repoName || "Repository"}</span>
-                </CardTitle>
-                <CardDescription className="line-clamp-2 text-xs min-h-[2.5rem]">
+                <div className="flex items-start justify-between gap-2">
+                  <CardTitle className="text-lg font-bold flex items-start gap-2 line-clamp-2 leading-snug">
+                    <Github className="w-4 h-4 text-primary mt-1 shrink-0" />
+                    <span title={repo.repoName}>{repo.repoName}</span>
+                  </CardTitle>
+                  <div className={`px-2 py-0.5 rounded-full text-[10px] font-medium border shrink-0 ${repo.isActive ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-700 border-red-200"}`}>
+                    {repo.isActive ? "Active" : "Inactive"}
+                  </div>
+                </div>
+                <CardDescription className="line-clamp-4 text-xs mt-2 leading-relaxed">
                    {repo.description || "No description provided."}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pb-4">
-                <div className="space-y-3">
+              
+              <CardContent className="pb-4 flex-grow space-y-4">
+                <div className="space-y-2.5">
                    <a 
-                    href={repo.repoUrl} 
+                    href={repo.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-xs text-primary hover:underline w-fit"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    <span className="truncate max-w-[180px]">{repo.repoUrl}</span>
+                    <span className="truncate max-w-[180px] font-medium">{repo.username}/{repo.repoName}</span>
                   </a>
 
-                  {repo.website && (
-                    <div className="flex items-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-full w-fit border border-emerald-100 dark:border-emerald-500/20">
-                      <Globe className="w-3 h-3" />
-                      <span className="font-medium">Linked to: {repo.website.title}</span>
-                    </div>
-                  )}
+                  <div className="flex flex-wrap gap-1.5">
+                    {repo.language && (
+                      <div className="flex items-center gap-1 text-[10px] bg-muted/50 px-2 py-0.5 rounded-sm text-muted-foreground border border-border/50">
+                        <Code2 className="w-3 h-3" />
+                        {repo.language}
+                      </div>
+                    )}
+                    {repo.websiteId && (
+                      <div className="flex items-center gap-1 text-[10px] bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 px-2 py-0.5 rounded-sm border border-emerald-100 dark:border-emerald-500/20">
+                        <Globe className="w-3 h-3" />
+                        Linked
+                      </div>
+                    )}
+                  </div>
                 </div>
+
+                {repo.topics && repo.topics.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {repo.topics.slice(0, 3).map((topic: string) => (
+                      <Badge key={topic} variant="outline" className="text-[10px] px-1.5 py-0 font-normal h-5 border-border/40">
+                        {topic}
+                      </Badge>
+                    ))}
+                    {repo.topics.length > 3 && (
+                      <span className="text-[10px] text-muted-foreground/60 self-center">+{repo.topics.length - 3}</span>
+                    )}
+                  </div>
+                )}
               </CardContent>
-              <CardFooter className="pt-3 border-t bg-muted/5 flex justify-end gap-2">
-                 <Button variant="ghost" size="sm" className="h-8 px-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-500/10">
+
+              <CardFooter className="pt-3 border-t bg-muted/5 flex justify-between items-center h-12">
+                 <span className="text-[10px] text-muted-foreground">
+                    {repo.username}
+                 </span>
+                 <Button variant="ghost" size="xs" className="h-7 px-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-500/10">
                     <Trash2 className="w-3.5 h-3.5 mr-1" />
                     Delete
                  </Button>
@@ -118,7 +150,7 @@ export default async function GithubReposPage() {
               Linked GitHub repositories will appear here. Add one by link to get started.
             </p>
             <Link href="/admin/github-repos/add">
-              <Button variant="default" className="px-8">
+              <Button variant="default" className="px-8 shadow-sm">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Your First Repo
               </Button>
