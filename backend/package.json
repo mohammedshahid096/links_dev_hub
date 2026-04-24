@@ -13,6 +13,7 @@
     "prisma:reset": "prisma migrate reset",
     "seed": "ts-node seed/index.ts",
     "seed:website": "ts-node seed/website.seed.ts",
+    "seed:repoUrl": "ts-node seed/githubrepo.seed.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
