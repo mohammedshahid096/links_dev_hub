@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server";
 import { getAdminGithubRepos } from "@/api/github-repos/admin.github";
+import { GithubRepo } from "@/types/admin/github-repo.type";
 import {
   Card,
   CardContent,
@@ -12,6 +13,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { RepoPagination } from "./_components/repo-pagination";
 
 export const metadata = {
   title: "GitHub Repositories | Admin",
@@ -19,17 +21,29 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function GithubReposPage() {
+export default async function GithubReposPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; limit?: string }>;
+}) {
   const { getToken } = await auth();
   const token = await getToken();
+  const resolvedParams = await searchParams;
+  const page = resolvedParams.page || "1";
+  const limit = resolvedParams.limit || "20";
 
-  let repos: any[] = [];
+  let repos: GithubRepo[] = [];
+  let totalPages = 1;
+  let currentPage = 1;
   let error: string | null = null;
 
   try {
-    const { success, data } = await getAdminGithubRepos(token);
+    const { success, data } = await getAdminGithubRepos(token, { page, limit });
     if (success) {
-      repos = data?.data || [];
+      const result = data?.data;
+      repos = result?.repos || [];
+      totalPages = result?.totalPages || 1;
+      currentPage = result?.page || 1;
     } else {
       error = data?.message || "Failed to fetch repositories";
     }
@@ -66,7 +80,7 @@ export default async function GithubReposPage() {
 
       {repos.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {repos.map((repo) => (
+          {repos.map((repo: GithubRepo) => (
             <Card key={repo.id} className="group hover:shadow-md transition-all duration-300 border-border/50 flex flex-col h-full bg-card">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
@@ -158,6 +172,8 @@ export default async function GithubReposPage() {
           </div>
         )
       )}
+
+      <RepoPagination currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
 }

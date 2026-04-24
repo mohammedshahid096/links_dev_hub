@@ -5,6 +5,10 @@ import errorHandling, { AppError } from "../utils/errorHandling.util";
 import responseHandlingUtil from "../utils/responseHandling.util";
 import httpErrors from "http-errors";
 import { fetchGithubRepoData, parseGithubUrl } from "../helpers/github.helper";
+import {
+  GithubRepoWhereInput,
+  SortOrder,
+} from "../../generated/prisma/internal/prismaNamespace";
 
 // create github repo controller
 export const createGithubRepoController = async (
@@ -82,9 +86,55 @@ export const getAllGithubReposController = async (
       "controller - githubRepo.controller - getAllGithubReposController - start",
     );
 
-    const repos = await prisma.githubRepo.findMany({
-      orderBy: { created_at: "desc" },
-    });
+    let {
+      sortBy = "desc",
+      repoName,
+      page = "1",
+      limit = "20",
+    }: {
+      sortBy?: SortOrder;
+      repoName?: string;
+      page?: string | number;
+      limit?: string | number;
+    } = req.query;
+
+    const pageNumber = Math.max(1, Number(page));
+    const limitNumber = Math.max(1, Number(limit));
+    const skip = (pageNumber - 1) * limitNumber;
+
+    let where: GithubRepoWhereInput = {};
+
+    if (repoName) {
+      where.repoName = {
+        contains: repoName,
+        mode: "insensitive", // Case-insensitive search
+      };
+    }
+
+    const [repos, totalCount] = await Promise.all([
+      prisma.githubRepo.findMany({
+        where,
+        orderBy: { created_at: sortBy },
+        skip: skip,
+        take: limitNumber,
+      }),
+      prisma.githubRepo.count({ where }),
+    ]);
+
+    // 3. Pagination Logic
+    const totalPages = Math.ceil(totalCount / limitNumber);
+    const hasNext = pageNumber < totalPages;
+    const hasPrevious = pageNumber > 1;
+
+    const data = {
+      page: pageNumber,
+      limit: limitNumber,
+      totalCount,
+      totalPages,
+      hasNext,
+      hasPrevious,
+      repos,
+    };
 
     logger.info(
       "controller - githubRepo.controller - getAllGithubReposController - end",
@@ -92,7 +142,7 @@ export const getAllGithubReposController = async (
     responseHandlingUtil.successResponseStandard(res, {
       statusCode: 200,
       message: "GitHub repos fetched successfully",
-      data: repos,
+      data,
     });
   } catch (error) {
     logger.error(
