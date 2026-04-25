@@ -1,5 +1,23 @@
 import { getAdminWebsiteBySlug } from "@/api/website/admin.website";
 import { auth } from "@clerk/nextjs/server";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
+  
+  // Capitalize slug for title if website title not found easily
+  const displayTitle = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  
+  return {
+    title: `${displayTitle} | Admin Website`,
+    description: `Viewing details for ${displayTitle} on the DevHub platform.`,
+  };
+}
 import {
   ArrowLeft,
   Globe,

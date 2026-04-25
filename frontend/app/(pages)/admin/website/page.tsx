@@ -13,6 +13,13 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { WebsiteSearch } from "./_components/WebsiteSearch";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin — Websites",
+  description: "Manage and organize your websites in the admin dashboard.",
+  robots: { index: false, follow: false },
+};
 
 export default async function WebsitesPage({ 
   searchParams 
@@ -73,10 +80,11 @@ export default async function WebsitesPage({
     <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-6 md:gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground flex items-center gap-2">
+            <Globe className="w-8 h-8 text-primary" />
             Websites
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-muted-foreground mt-1 text-sm md:text-base">
             Manage your websites across the platform
           </p>
         </div>
@@ -107,15 +115,15 @@ export default async function WebsitesPage({
           >
             <CardHeader className="pb-2 flex-none">
               <div className="flex items-start justify-between w-full">
-                <CardTitle className="text-lg font-bold flex items-center gap-2 line-clamp-1 h-7">
+                <CardTitle className="text-lg font-bold flex items-start gap-2 leading-tight min-w-0">
                   {website.iconUrl ? (
-                     <img src={website.iconUrl} alt="" className="w-5 h-5 rounded-sm object-cover bg-muted shrink-0" />
+                     <img src={website.iconUrl} alt="" className="w-5 h-5 mt-0.5 rounded-sm object-cover bg-muted shrink-0" />
                   ) : (
                     <div className="p-1 bg-primary/10 rounded-md shrink-0">
                       <Globe className="w-4 h-4 text-primary" />
                     </div>
                   )}
-                  <span className="line-clamp-1 text-base text-foreground" title={website.title || website.slug}>
+                  <span className="line-clamp-2 text-base text-foreground pt-[1px]" title={website.title || website.slug}>
                     {website.title || website.slug}
                   </span>
                 </CardTitle>

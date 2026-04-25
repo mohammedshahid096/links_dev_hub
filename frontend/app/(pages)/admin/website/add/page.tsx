@@ -3,6 +3,12 @@ import Link from "next/link";
 import { getAdminCategories } from "@/api/category/admin.category";
 import { auth } from "@clerk/nextjs/server";
 import { AddWebsiteForm } from "../_components/AddWebsiteForm";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Add Website | Admin",
+  description: "Add a new website to the DevHub platform.",
+};
 
 export default async function AddWebsitePage() {
   const { getToken } = await auth();

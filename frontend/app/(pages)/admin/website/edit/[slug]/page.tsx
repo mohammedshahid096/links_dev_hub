@@ -4,6 +4,12 @@ import { getAdminCategories } from "@/api/category/admin.category";
 import { getAdminWebsiteBySlug } from "@/api/website/admin.website";
 import { auth } from "@clerk/nextjs/server";
 import { UpdateWebsiteForm } from "../../_components/UpdateWebsiteForm";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit Website | Admin",
+  description: "Edit website details on the DevHub platform.",
+};
 
 export default async function EditWebsitePage({
   params,
