@@ -13,6 +13,7 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { WebsiteSearch } from "./_components/WebsiteSearch";
+import { AdminWebsitePagination } from "./_components/AdminWebsitePagination";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -64,17 +65,8 @@ export default async function WebsitesPage({
   const hasNext = result?.hasNext || false;
   const hasPrevious = result?.hasPrevious || false;
   const currentPage = parseInt(page as string) || 1;
+  const totalPages = result?.totalPages || 1;
 
-  // Function to generate the pagination URL
-  const getPaginationUrl = (newPage: number) => {
-    const params = new URLSearchParams();
-    if (searchTitle) params.append("searchTitle", searchTitle);
-    if (categoryId) params.append("categoryId", categoryId);
-    if (limit !== "20") params.append("limit", limit.toString());
-    if (sortBy !== "desc") params.append("sortBy", sortBy.toString());
-    params.append("page", newPage.toString());
-    return `/admin/website?${params.toString()}`;
-  };
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500">
@@ -221,26 +213,12 @@ export default async function WebsitesPage({
 
       {/* Pagination Controls */}
       {!error && (hasPrevious || hasNext) && (
-        <div className="mt-8 flex justify-between items-center bg-card p-4 rounded-lg border shadow-sm">
-          <p className="text-sm text-muted-foreground hidden sm:block font-medium">
-            Page {currentPage} of {result?.totalPages || 1} <span className="opacity-70 ml-2">({result?.totalCount} total)</span>
+        <div className="mt-8 flex flex-col sm:flex-row justify-between items-center bg-card p-4 rounded-lg border shadow-sm gap-4">
+          <p className="text-sm text-muted-foreground font-medium order-2 sm:order-1">
+            Page {currentPage} of {totalPages} <span className="opacity-70 ml-2">({result?.totalCount} total)</span>
           </p>
-          <div className="flex gap-2 w-full sm:w-auto justify-between sm:justify-end">
-            {hasPrevious ? (
-              <Link href={getPaginationUrl(currentPage - 1)}>
-                <Button variant="outline" size="sm">Previous</Button>
-              </Link>
-            ) : (
-              <Button variant="outline" size="sm" disabled>Previous</Button>
-            )}
-            
-            {hasNext ? (
-              <Link href={getPaginationUrl(currentPage + 1)}>
-                <Button variant="default" size="sm">Next</Button>
-              </Link>
-            ) : (
-              <Button variant="default" size="sm" disabled>Next</Button>
-            )}
+          <div className="w-full sm:w-auto order-1 sm:order-2">
+            <AdminWebsitePagination currentPage={currentPage} totalPages={totalPages} />
           </div>
         </div>
       )}
