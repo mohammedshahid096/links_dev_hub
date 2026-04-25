@@ -24,6 +24,11 @@ enum Provider {
   GITHUB
 }
 
+enum MessageRole {
+  user
+  assistant
+}
+
 // user Model
 model User {
   id         String  @id @default(uuid()) @db.Uuid
@@ -40,6 +45,8 @@ model User {
   categories Category[]
   websites   website[]
   githubRepos GithubRepo[]
+  chatsSessions ChatSession[]
+
 }
 
 // category model
@@ -112,3 +119,44 @@ model GithubRepo {
 
   @@index([username])
 }
+
+// Chat Session model
+model ChatSession {
+  id    String  @id @default(uuid()) @db.Uuid
+  title String? @db.VarChar(200)
+
+  userId  String? @db.Uuid
+  user    User?   @relation(fields: [userId], references: [id])
+
+  isActive   Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  messages ChatMessage[]
+}
+
+// Chat Message model
+model ChatMessage {
+  id      String      @id @default(uuid()) @db.Uuid
+  role    MessageRole
+  content String      @db.Text
+
+  inputTokens  Int @default(0)
+  outputTokens Int @default(0)
+  totalTokens  Int @default(0)
+
+
+  citations Json? @db.JsonB // [{ websiteId, title, url }]
+
+  // any extra data (model name, latency, etc.)
+  metadata Json? @db.JsonB
+
+  timestamp  DateTime @default(now())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+
+  sessionId String      @db.Uuid
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
