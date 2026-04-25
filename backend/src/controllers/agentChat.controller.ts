@@ -1,8 +1,10 @@
+import httpError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 import errorHandling, { AppError } from "../utils/errorHandling.util";
 import responseHandlingUtil from "../utils/responseHandling.util";
 import { prisma } from "../configs/prismaClient";
 import logger from "../configs/logger.config";
+import AgentService from "../service/agent.service";
 
 export const createNewChatSessionController = async (
   req: Request,
@@ -37,77 +39,80 @@ export const createNewChatSessionController = async (
   }
 };
 
-// export const agentChatController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction,
-// ) => {
-//   try {
-//     const { sessionId } = req.params;
-//     const { inputMessage } = req.body;
+export const agentChatController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { sessionId } = req.params;
+    const { inputMessage } = req.body;
 
-//     const chatDetails = await agentChatModel.findById(sessionId).lean();
+    // fetch session with message history
+    const chatDetails = await prisma.chatSession.findUnique({
+      where: { id: sessionId },
+      include: { messages: true },
+    });
 
-//     if (!chatDetails) {
-//       return next(httpError.NotFound("Session Details not found"));
-//     }
+    if (!chatDetails) {
+      return next(httpError.NotFound("Session Details not found"));
+    }
 
-//     const userTimestamp = new Date();
+    const userTimestamp = new Date();
 
-//     const agentService = new AgentService({
-//       sessionId: chatDetails._id.toString(),
-//     });
+    // process the request through agent
+    const agentService = new AgentService({
+      sessionId: chatDetails.id,
+    });
 
-//     const embeddings = new GoogleGenerativeAIEmbeddings({
-//       model: embeddings_model_names["gemini-embedding-001"], // 768 dimensions
-//       apiVersion: "v1",
-//     } as any);
+    const aiResponse = await agentService.processRequest(
+      inputMessage,
+      chatDetails,
+    );
 
-//     const chromaService = new ChromaService({
-//       collectionName: WEB_COLLECTION_NAME,
-//       embeddings,
-//     });
+    const lastMessage = aiResponse.messages?.[aiResponse.messages.length - 1];
+    const tokenUsage = (lastMessage?.response_metadata as any)?.tokenUsage;
 
-//     const chromaQueryData = await chromaService.query(inputMessage);
-//     const context = chromaQueryData.map((doc) => doc.pageContent).join("\n\n");
+    // save user message + assistant message in one transaction
+    const [userMessage, assistantMessage] = await prisma.$transaction([
+      prisma.chatMessage.create({
+        data: {
+          content: inputMessage || "",
+          role: "user",
+          timestamp: userTimestamp,
+          sessionId,
+        },
+      }),
+      prisma.chatMessage.create({
+        data: {
+          content: aiResponse.output || "",
+          role: "assistant",
+          timestamp: new Date(),
+          inputTokens: tokenUsage?.promptTokens || 0,
+          outputTokens: tokenUsage?.completionTokens || 0,
+          totalTokens: tokenUsage?.totalTokens || 0,
+          sessionId,
+        },
+      }),
+    ]);
 
-//     const aiResponse = await agentService.processRequest(
-//       inputMessage,
-//       chatDetails,
-//       context,
-//     );
-//     const tokenUsage = aiResponse.messages?.[aiResponse.messages.length - 1]
-//       ?.response_metadata?.tokenUsage as any;
+    // update session updatedAt so sidebar can sort by latest activity
+    await prisma.chatSession.update({
+      where: { id: sessionId },
+      data: { updated_at: new Date() },
+    });
 
-//     const newMessageData: IMessage[] = [
-//       {
-//         content: inputMessage || "",
-//         role: "human",
-//         timestamp: userTimestamp,
-//       },
-//       {
-//         content: aiResponse.output || "",
-//         role: "ai",
-//         timestamp: new Date(),
-//         tokenUsage: {
-//           input_tokens: tokenUsage?.promptTokens || 0,
-//           output_tokens: tokenUsage?.completionTokens || 0,
-//           total_tokens: tokenUsage?.totalTokens || 0,
-//         },
-//       },
-//     ];
-
-//     const updatedDetails = await agentChatModel.findByIdAndUpdate(
-//       sessionId,
-//       { $push: { messages: newMessageData } },
-//       { new: true },
-//     );
-
-//     responseHandlingUtil.successResponseStandard(res, {
-//       data: updatedDetails,
-//       otherData: { aiResponse, aiMessage: aiResponse.output },
-//     });
-//   } catch (error) {
-//     errorHandling.handlingControllersError(error as AppError, next);
-//   }
-// };
+    return responseHandlingUtil.successResponseStandard(res, {
+      data: {
+        userMessage,
+        assistantMessage,
+      },
+      otherData: {
+        aiResponse,
+        aiMessage: aiResponse.output,
+      },
+    });
+  } catch (error) {
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};
