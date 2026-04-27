@@ -116,3 +116,29 @@ export const agentChatController = async (
     errorHandling.handlingControllersError(error as AppError, next);
   }
 };
+
+export const getSessionDetailsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { sessionId } = req.params;
+    const sessionData = await prisma.chatSession.findUnique({
+      where: { id: sessionId },
+      include: { messages: true },
+    });
+
+    if (!sessionData) {
+      return next(httpError(404, "Session not found"));
+    }
+
+    responseHandlingUtil.successResponseStandard(res, {
+      statusCode: 200,
+      message: "session details fetched successfully",
+      data: sessionData,
+    });
+  } catch (error) {
+    errorHandling.handlingControllersError(error as AppError, next);
+  }
+};
