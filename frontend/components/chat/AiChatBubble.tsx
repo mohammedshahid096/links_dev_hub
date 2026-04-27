@@ -39,6 +39,7 @@ export function AiChatBubble() {
     sessionLoading: false,
     isLoading: false,
     inputMessage: "",
+    sessionId : "",
   });
   
   // Define message state structure based on API
@@ -49,6 +50,7 @@ export function AiChatBubble() {
   useEffect(() => {
     let sessionExist = getChatSession();
     if (sessionExist) {
+      setInfo((prev) => ({ ...prev, sessionId: sessionExist }));
       getSessionDetailsFunction(sessionExist);
     }
   }, []);
