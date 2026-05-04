@@ -3,6 +3,7 @@
 import { UserProfile, useAuth } from "@clerk/nextjs";
 import "@/app/assets/css/profile.css";
 import { useEffect } from "react";
+import API_URLS from "@/services/config";
 
 const page = () => {
   const { getToken } = useAuth();
@@ -13,7 +14,7 @@ const page = () => {
       console.log("Clerk Token:", token);
 
       if (token) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVER}/auth/profile`, {
+        const response = await fetch(`${API_URLS.API_SERVER_BASE_URL}/auth/profile`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

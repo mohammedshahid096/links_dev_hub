@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Activity, RefreshCw, Server, ShieldCheck, Globe, Cpu, Network, Info } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
+import API_URLS from "@/services/config";
 
 interface HealthData {
   success: boolean;
@@ -22,8 +23,7 @@ export default function ServerHealthPage() {
   const fetchHealth = async () => {
     setLoading(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_BACKEND_SERVER? process.env.NEXT_PUBLIC_BACKEND_SERVER?.replace("/api/v1",""): "http://localhost:3000";
-      const response = await fetch(`${baseUrl}/health`);
+      const response = await fetch(`${API_URLS.API_SERVER_BASE_URL}/health`);
       if (!response.ok) throw new Error("Failed to fetch server health");
       const result = await response.json();
       setData(result);
