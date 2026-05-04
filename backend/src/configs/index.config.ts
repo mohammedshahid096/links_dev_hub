@@ -19,8 +19,8 @@ const config: Config = {
   DEVELOPMENT_MODE:
     (process.env.DEVELOPMENT_MODE as Environment) || "development",
   DEVELOPMENT_AUTH_ID: process.env.DEVELOPMENT_AUTH_ID || null,
-  CORS_ALLOW_ORIGINS: process.env.ALLOW_ORIGINS_ACCESS
-    ? JSON.parse(process.env.ALLOW_ORIGINS_ACCESS)
+  CORS_ALLOW_ORIGINS: process.env.CORS_ALLOW_ORIGINS
+    ? JSON.parse(process.env.CORS_ALLOW_ORIGINS)
     : ["http://localhost:3000"],
   ACCESS_TOKEN_KEY: process.env.ACCESS_TOKEN_KEY || "something",
   ACCESS_TOKEN_KEY_TIME: process.env.ACCESS_TOKEN_KEY_TIME || "1D",
