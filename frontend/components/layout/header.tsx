@@ -20,6 +20,7 @@ export function Header() {
         <Link href="/watchlist" className="hover:text-foreground transition-colors flex items-center gap-1">
           <Star className="w-3.5 h-3.5" /> Watchlist
         </Link>
+        <Link href="/server" className="hover:text-foreground transition-colors">Server</Link>
       </nav>
       <div className="flex items-center gap-4">
         <SignedIn>
