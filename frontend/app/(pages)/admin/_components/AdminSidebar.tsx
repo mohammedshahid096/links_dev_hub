@@ -11,7 +11,9 @@ import {
   PlusSquare, 
   Github, 
   Plus,
-  LayoutDashboard
+  LayoutDashboard,
+  User,
+  Users
 } from "lucide-react";
 import {
   Sidebar,
@@ -78,6 +80,17 @@ const navigation = [
         title: "Add by Link",
         href: "/admin/github-repos/add",
         icon: Plus,
+      }
+    ]
+  },
+  {
+    title: "Users",
+    icon: User,
+    items: [
+      {
+        title: "User List",
+        href: "/admin/users",
+        icon: Users,
       }
     ]
   }
