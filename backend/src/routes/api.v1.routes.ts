@@ -5,6 +5,7 @@ import websiteRoutes from "./website.routes";
 import clerkRoutes from "./clerk.routes";
 import githubRepoRoutes from "./github.routes";
 import chatRoutes from "./chat.routes";
+import adminUserRoutes from "./adminUsers.routes";
 
 const apiV1Routes = Router();
 
@@ -25,5 +26,8 @@ apiV1Routes.use("/github-repos", githubRepoRoutes);
 
 // agent routes
 apiV1Routes.use("/agent", chatRoutes);
+
+// admin. user routes
+apiV1Routes.use("/admin/users", adminUserRoutes);
 
 export default apiV1Routes;
