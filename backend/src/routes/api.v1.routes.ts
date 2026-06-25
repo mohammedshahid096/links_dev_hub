@@ -6,6 +6,7 @@ import clerkRoutes from "./clerk.routes";
 import githubRepoRoutes from "./github.routes";
 import chatRoutes from "./chat.routes";
 import adminUserRoutes from "./adminUsers.routes";
+import websiteWatchlistRoutes from "./websiteWatchlist.routes";
 
 const apiV1Routes = Router();
 
@@ -29,5 +30,8 @@ apiV1Routes.use("/agent", chatRoutes);
 
 // admin. user routes
 apiV1Routes.use("/admin/users", adminUserRoutes);
+
+// website watchlist routes
+apiV1Routes.use("/website-watchlist", websiteWatchlistRoutes);
 
 export default apiV1Routes;
