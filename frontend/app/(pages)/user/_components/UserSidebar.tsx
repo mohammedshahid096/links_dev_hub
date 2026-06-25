@@ -8,8 +8,8 @@ import {
   Globe,
   Github,
   User,
-  Heart,
   FolderHeart,
+  LayoutDashboard,
 } from "lucide-react";
 import {
   Sidebar,
@@ -24,13 +24,19 @@ import {
 
 const navigation = [
   {
+    title: "Dashboard",
+    href: "/user",
+    icon: LayoutDashboard,
+    exact: true,
+  },
+  {
     title: "Watchlist Website",
     href: "/user/website-watchlist",
     icon: Globe,
   },
   {
     title: "Git Repo's",
-    href: "/user/github-repos", // In case they build this page, otherwise links here. Can also be fallback to '#' if not implemented
+    href: "/user/github-repos",
     icon: Github,
   },
   {
@@ -46,7 +52,7 @@ export function UserSidebar() {
   return (
     <Sidebar className="border-r border-border/50 hidden md:flex" collapsible="icon">
       <SidebarHeader className="h-16 flex justify-center px-4 border-b">
-        <Link href="/user/website-watchlist" className="flex items-center gap-2">
+        <Link href="/user" className="flex items-center gap-2">
           <FolderHeart className="w-5 h-5 text-primary shrink-0" />
           <span className="text-lg font-bold tracking-tight text-foreground truncate group-data-[collapsible=icon]:hidden">
             User Center
@@ -58,7 +64,9 @@ export function UserSidebar() {
         <SidebarGroup>
           <SidebarMenu>
             {navigation.map((item, idx) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+              const isActive = item.exact
+                ? pathname === item.href
+                : pathname === item.href || pathname.startsWith(item.href + "/");
               return (
                 <SidebarMenuItem key={idx}>
                   <SidebarMenuButton

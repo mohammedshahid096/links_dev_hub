@@ -24,11 +24,11 @@ export function Header() {
       <div className="flex items-center gap-4">
         <SignedIn>
           <Link 
-            href="/admin/website" 
+            href="/user" 
             className="flex items-center gap-2 text-sm font-medium bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 shadow-sm"
           >
             <LayoutDashboard className="w-4 h-4" />
-            <span className="hidden sm:inline">Admin Dashboard</span>
+            <span className="hidden sm:inline">Dashboard</span>
           </Link>
           <UserButton afterSignOutUrl="/" />
         </SignedIn>
