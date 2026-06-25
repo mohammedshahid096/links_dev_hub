@@ -46,6 +46,7 @@ model User {
   websites   website[]
   githubRepos GithubRepo[]
   chatsSessions ChatSession[]
+  websiteWatchlists WebsiteWatchlist[]
 
 }
 
@@ -94,6 +95,8 @@ model website {
   createdUser User   @relation(fields: [created_by], references: [id])
 
   githubRepo  GithubRepo[]
+  websiteWatchlistWatchers WebsiteWatchlist[]
+
 }
 
 
@@ -160,3 +163,18 @@ model ChatMessage {
   session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 }
 
+model WebsiteWatchlist {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  websiteId String  @db.Uuid
+  website   website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+
+  @@unique([userId, websiteId]) // prevents duplicate watchlist entries
+  @@index([userId])
+  @@index([websiteId])
+}
