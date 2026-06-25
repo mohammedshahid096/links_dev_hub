@@ -17,13 +17,15 @@ const websiteWatchlistRoutes = Router();
 websiteWatchlistRoutes
   .route("/")
   .get(
-    authentication,
-    authorization([roles.USER]),
+    // authentication,
+    // authorization([roles.USER]),
+    devAuthentication,
     getAllWebsiteWatchlistsController,
   )
   .post(
-    authentication,
-    authorization([roles.USER]),
+    // authentication,
+    // authorization([roles.USER]),
+    devAuthentication,
     addNewWebsiteWatchlistValidation,
     addNewWebsiteWatchlistController,
   );
