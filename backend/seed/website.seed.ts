@@ -97,9 +97,13 @@ const websitesList = [
     url: "https://10015.io/tools/css-loader-generator",
   },
   { title: "Shortcuts.design", url: "http://shortcuts.design" },
-  { title: "Magic UI", url: "https://magicui.design/" },
   { title: "React Icons", url: "https://react-icons.github.io/react-icons/" },
   { title: "AWESOME DESIGN.md", url: "https://getdesign.md" },
+  { title: "Terminal UI's", url: "https://www.termcn.dev" },
+  { title: "SVGL", url: "https://svgl.app/" },
+  { title: "Papepr Draw", url: "https://paperdraw.dev/" },
+  { title: "It Tools", url: "https://it-tools.tech/" },
+  { title: "Dot Matrix Loaders", url: "https://dotmatrix.zzzzshawn.cloud/" },
 ];
 class WebsiteSeedingService {
   constructor() {}
