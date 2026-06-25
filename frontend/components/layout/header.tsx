@@ -17,7 +17,7 @@ export function Header() {
         <Link href="/websites" className="hover:text-foreground transition-colors">Websites</Link>
         <Link href="/github-repos" className="hover:text-foreground transition-colors">GitHub</Link>
         <Link href="/categories" className="hover:text-foreground transition-colors">Categories</Link>
-        <Link href="/watchlist" className="hover:text-foreground transition-colors flex items-center gap-1">
+        <Link href="/user/website-watchlist" className="hover:text-foreground transition-colors flex items-center gap-1">
           <Star className="w-3.5 h-3.5" /> Watchlist
         </Link>
       </nav>

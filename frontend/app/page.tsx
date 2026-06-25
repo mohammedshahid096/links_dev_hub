@@ -62,7 +62,7 @@ export default function Home() {
                 Explore Sites & Repos
               </Link>
               <Link 
-                href="/watchlist" 
+                href="/user/website-watchlist" 
                 className="flex items-center justify-center gap-2 w-full sm:w-auto h-14 px-8 rounded-full bg-secondary/50 text-secondary-foreground font-medium text-lg border border-border backdrop-blur-sm hover:bg-secondary hover:border-muted-foreground/30 hover:scale-105 active:scale-95 transition-all group"
               >
                 View My Watchlist

@@ -135,7 +135,7 @@ export function HeroDecorativeUI() {
           <div className="h-6 flex-1 max-w-xs bg-background/40 rounded-md border border-border/40 flex items-center px-3 mx-auto">
             <Globe className="w-3 h-3 text-muted-foreground mr-2 shrink-0" />
             <span className="text-[11px] text-muted-foreground font-mono truncate">
-              devhub.app/watchlist
+              devhub.app/user/website-watchlist
             </span>
           </div>
           <div className="flex items-center gap-1 text-muted-foreground/50">
