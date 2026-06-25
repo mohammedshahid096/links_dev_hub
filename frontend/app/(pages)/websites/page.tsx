@@ -7,6 +7,7 @@ import { WebsiteFilters } from "./_components/website-filters";
 import { WebsitePagination } from "./_components/website-pagination";
 import { ShareButton } from "./_components/share-button";
 import { CopyButton } from "./_components/copy-button";
+import { WatchlistButton } from "./_components/watchlist-button";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/home/footer";
 import type { Metadata } from "next";
@@ -161,6 +162,7 @@ export default async function WebsitesPage({
                       <div className="w-full flex items-center justify-between text-xs font-medium text-muted-foreground">
                         <span className="truncate max-w-[150px]">{new URL(website.url).hostname}</span>
                         <div className="flex items-center gap-2">
+                          <WatchlistButton websiteId={website.id} websiteTitle={website.title} />
                           <ShareButton url={website.url} title={website.title} />
                           <CopyButton url={website.url} />
                           <a 

@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  authentication,
-  authorization,
-  devAuthentication,
-} from "../middlewares/auth.middleware";
+import { authentication, authorization } from "../middlewares/auth.middleware";
 import { roles } from "../constants/index.constants";
 import { addNewWebsiteWatchlistValidation } from "../validations/websiteWatchlist.joi";
 import {
@@ -17,15 +13,13 @@ const websiteWatchlistRoutes = Router();
 websiteWatchlistRoutes
   .route("/")
   .get(
-    // authentication,
-    // authorization([roles.USER]),
-    devAuthentication,
+    authentication,
+    authorization([roles.USER]),
     getAllWebsiteWatchlistsController,
   )
   .post(
-    // authentication,
-    // authorization([roles.USER]),
-    devAuthentication,
+    authentication,
+    authorization([roles.USER]),
     addNewWebsiteWatchlistValidation,
     addNewWebsiteWatchlistController,
   );

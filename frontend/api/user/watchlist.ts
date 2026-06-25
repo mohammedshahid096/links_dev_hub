@@ -50,6 +50,18 @@ export const getWatchlistsApi = async (
   return { success, data, status };
 };
 
+export const addWatchlistApi = async (
+  websiteId: string,
+  token: string | null
+): Promise<{ success: boolean; data: any; status?: number }> => {
+  const [success, data, status] = await Service.fetchPost<any>(
+    `/website-watchlist`,
+    { websiteId },
+    token ?? undefined
+  );
+  return { success, data, status };
+};
+
 export const deleteWatchlistApi = async (
   id: string,
   token: string | null

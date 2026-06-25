@@ -181,6 +181,7 @@ export const deleteWebsiteWatchlistController = async (
 
     const { id } = req.params;
     const authUser = req.authUser;
+    console.log(id, authUser?.id);
 
     const watchlist = await prisma.websiteWatchlist.findFirst({
       select: {
@@ -188,7 +189,7 @@ export const deleteWebsiteWatchlistController = async (
       },
       where: {
         id,
-        userId: authUser?.id!,
+        userId: authUser?.id,
       },
     });
 
