@@ -1,8 +1,26 @@
 import { ReactNode } from "react";
 import { AdminSidebar } from "./_components/AdminSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { auth } from "@clerk/nextjs/server";
+import { getProfileApi } from "@/api/auth/profile";
+import { notFound } from "next/navigation";
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({ children }: { children: ReactNode }) {
+  const token = await auth().then((a) => a.getToken());
+
+  if (!token) {
+    notFound();
+  }
+
+  try {
+    const { success, data } = await getProfileApi(token);
+    if (!success || data?.data?.role !== "admin") {
+      notFound();
+    }
+  } catch (error) {
+    notFound();
+  }
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-background w-full">
@@ -17,3 +35,4 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     </SidebarProvider>
   );
 }
+
