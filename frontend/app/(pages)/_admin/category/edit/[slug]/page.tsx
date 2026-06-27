@@ -6,7 +6,7 @@ import {
   getAdminCategoryBySlug,
   updateAdminCategory,
   deleteAdminCategory,
-} from "@/api/category/admin.category";
+} from "@/_api/category/admin.category";
 import { Loader2, ArrowLeft, Trash2 } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";

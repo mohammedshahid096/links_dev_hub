@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Bot, X, Send, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getChatSession } from "@/helpers/session-storage.helper";
-import { sessionDetailsApi } from "@/api/chatbot/chatbot.api";
+import { sessionDetailsApi } from "@/_api/chatbot/chatbot.api";
 
 // Skeleton for loading individual messages or initial session loading
 function MessageSkeleton({ isAssistant = true }: { isAssistant?: boolean }) {

@@ -2,7 +2,7 @@ import { Github, Plus, ExternalLink, Globe, Trash2, Code2, Tag } from "lucide-re
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server";
-import { getAdminGithubRepos } from "@/api/github-repos/admin.github";
+import { getAdminGithubRepos } from "@/_api/github-repos/admin.github";
 import { GithubRepo } from "@/types/admin/github-repo.type";
 import {
   Card,

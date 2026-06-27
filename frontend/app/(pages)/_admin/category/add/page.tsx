@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createAdminCategory } from "@/api/category/admin.category";
+import { createAdminCategory } from "@/_api/category/admin.category";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";

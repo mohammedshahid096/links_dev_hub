@@ -1,4 +1,4 @@
-import { getPublicWebsiteBySlug } from "@/api/website/public.website";
+import { getPublicWebsiteBySlug } from "@/_api/website/public.website";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/home/footer";
 import { Globe, ExternalLink, Image as ImageIcon, Folder, ArrowLeft } from "lucide-react";

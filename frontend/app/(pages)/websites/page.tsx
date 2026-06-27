@@ -1,5 +1,5 @@
-import { getPublicWebsites } from "@/api/website/public.website";
-import { getPublicCategories } from "@/api/category/public.category";
+import { getPublicWebsites } from "@/_api/website/public.website";
+import { getPublicCategories } from "@/_api/category/public.category";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Globe, ExternalLink, Folder } from "lucide-react";
 import Link from "next/link";

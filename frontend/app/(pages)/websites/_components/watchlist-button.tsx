@@ -3,7 +3,7 @@
 import { useAuth } from "@clerk/nextjs";
 import { useState } from "react";
 import { Bookmark, BookmarkCheck, Loader2 } from "lucide-react";
-import { addWatchlistApi } from "@/api/user/watchlist";
+import { addWatchlistApi } from "@/_api/user/watchlist";
 
 // ── Toast ───────────────────────────────────────────────────────────────────
 function Toast({

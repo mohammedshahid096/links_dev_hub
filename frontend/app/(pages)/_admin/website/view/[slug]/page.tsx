@@ -1,4 +1,4 @@
-import { getAdminWebsiteBySlug } from "@/api/website/admin.website";
+import { getAdminWebsiteBySlug } from "@/_api/website/admin.website";
 import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 

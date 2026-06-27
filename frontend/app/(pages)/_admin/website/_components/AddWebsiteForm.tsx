@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { addWebsiteByUrl } from "@/api/website/admin.website";
+import { addWebsiteByUrl } from "@/_api/website/admin.website";
 import { Loader2, Link as LinkIcon, Plus } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";

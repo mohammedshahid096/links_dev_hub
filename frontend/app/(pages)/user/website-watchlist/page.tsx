@@ -19,7 +19,7 @@ import {
   getWatchlistsApi,
   deleteWatchlistApi,
   WatchlistItem,
-} from "@/api/user/watchlist";
+} from "@/_api/user/watchlist";
 import { ShareButton } from "@/app/(pages)/websites/_components/share-button";
 import { CopyButton } from "@/app/(pages)/websites/_components/copy-button";
 import {

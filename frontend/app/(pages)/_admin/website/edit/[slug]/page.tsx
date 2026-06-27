@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { getAdminCategories } from "@/api/category/admin.category";
-import { getAdminWebsiteBySlug } from "@/api/website/admin.website";
+import { getAdminCategories } from "@/_api/category/admin.category";
+import { getAdminWebsiteBySlug } from "@/_api/website/admin.website";
 import { auth } from "@clerk/nextjs/server";
 import { UpdateWebsiteForm } from "../../_components/UpdateWebsiteForm";
 import type { Metadata } from "next";

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { Users, User as UserIcon, Shield, ShieldCheck, Mail, Calendar, CheckCircle2, XCircle } from "lucide-react";
-import { getAdminUsers } from "@/api/user/admin.user";
+import { getAdminUsers } from "@/_api/user/admin.user";
 import { UserSearch } from "./_components/UserSearch";
 import { UserPagination } from "./_components/UserPagination";
 import {

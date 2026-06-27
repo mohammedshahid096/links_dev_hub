@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
-import { getAllWebsiteTitles } from "@/api/website/admin.website";
+import { getAllWebsiteTitles } from "@/_api/website/admin.website";
 import { AddGithubRepoForm } from "./_components/AddGithubRepoForm";
 
 export const metadata = {

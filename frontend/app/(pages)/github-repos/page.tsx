@@ -1,4 +1,4 @@
-import { getPublicGithubRepos } from "@/api/github-repos/public.github";
+import { getPublicGithubRepos } from "@/_api/github-repos/public.github";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/home/footer";
 import { Github, Globe } from "lucide-react";

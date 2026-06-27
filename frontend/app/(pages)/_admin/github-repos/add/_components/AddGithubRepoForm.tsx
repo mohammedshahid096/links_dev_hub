@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { addGithubRepoByLink } from "@/api/github-repos/admin.github";
+import { addGithubRepoByLink } from "@/_api/github-repos/admin.github";
 import { Loader2, Github, Plus, Link as LinkIcon, Globe } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";

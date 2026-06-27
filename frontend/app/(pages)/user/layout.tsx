@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { UserSidebar } from "./_components/UserSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { auth } from "@clerk/nextjs/server";
-import { getProfileApi } from "@/api/auth/profile";
+import { getProfileApi } from "@/_api/auth/profile";
 import { notFound } from "next/navigation";
 
 export default async function UserLayout({ children }: { children: ReactNode }) {
