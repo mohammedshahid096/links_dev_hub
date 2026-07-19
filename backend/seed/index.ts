@@ -2,6 +2,83 @@ import { prisma } from "../src/configs/prismaClient";
 import { Provider, Role } from "../generated/prisma/enums";
 import slugify from "slugify";
 
+const seddingCategories = [
+  {
+    name: "UI Components",
+    description:
+      "Reusable UI component libraries, templates, and design systems for modern web development.",
+  },
+  {
+    name: "Design Inspiration",
+    description:
+      "Collections of landing pages, website designs, and UI inspiration for designers and developers.",
+  },
+  {
+    name: "AI Tools",
+    description:
+      "AI platforms, LLM providers, AI-powered developer tools, and AI directories.",
+  },
+  {
+    name: "Developer Tools",
+    description:
+      "General utilities, cheat sheets, automation tools, and resources for software developers.",
+  },
+  {
+    name: "CSS Tools",
+    description:
+      "Generators and utilities for CSS, animations, layouts, and styling.",
+  },
+  {
+    name: "Icons & Logos",
+    description:
+      "Icon libraries, SVG collections, brand logos, and vector assets.",
+  },
+  {
+    name: "Image Tools",
+    description:
+      "Image optimization, editing, upscaling, storage, CDN, and media processing tools.",
+  },
+  {
+    name: "Illustrations",
+    description:
+      "Illustrations, graphics, and visual assets for websites, apps, and presentations.",
+  },
+  {
+    name: "Productivity",
+    description:
+      "Tools for note-taking, markdown editing, clipboard sharing, and personal productivity.",
+  },
+  {
+    name: "Diagrams",
+    description:
+      "Tools for creating flowcharts, architecture diagrams, ER diagrams, and database models.",
+  },
+  {
+    name: "Resources",
+    description:
+      "Curated collections of developer resources, free services, documentation, and learning materials.",
+  },
+  {
+    name: "Utilities",
+    description:
+      "Helpful online utilities for everyday development and design tasks.",
+  },
+  {
+    name: "Mock Data",
+    description:
+      "Tools for generating fake users, sample data, and test datasets.",
+  },
+  {
+    name: "Terminal & CLI",
+    description:
+      "Terminal-inspired UI components, command-line resources, and CLI tools.",
+  },
+  {
+    name: "Animations",
+    description:
+      "Animation libraries, loading effects, transitions, and interactive UI elements.",
+  },
+];
 class SeedingService {
   constructor() {}
 
@@ -61,16 +138,14 @@ class SeedingService {
       description?: string;
       slug: string;
       createdBy: string;
-    }[] = [
-      { name: "React JS", slug: "", createdBy: adminUser?.id! },
-      { name: "Node Js", slug: "", createdBy: adminUser?.id! },
-    ];
-
-    for (let i = 0; i < categorySeedJson.length; i++) {
-      let name = categorySeedJson[i]?.name;
-      const slug = slugify(name, { lower: true, strict: true, trim: true });
-      categorySeedJson[i].slug = slug;
-    }
+    }[] = seddingCategories.map((category) => {
+      const slug = slugify(category.name, { lower: true, strict: true });
+      return {
+        ...category,
+        slug,
+        createdBy: adminUser?.id!,
+      };
+    });
 
     await prisma.category.createMany({ data: categorySeedJson! });
 
