@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { Layers, Star, LayoutDashboard } from "lucide-react";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { MobileNav } from "./mobile-nav";
 
 export function Header() {
   return (
     <header className="container mx-auto px-4 py-6 flex items-center justify-between relative z-50 animate-in fade-in duration-500">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
+        <MobileNav />
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
             <Layers className="w-5 h-5 text-primary" />
