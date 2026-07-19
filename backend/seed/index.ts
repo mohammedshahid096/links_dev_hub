@@ -2,7 +2,7 @@ import { prisma } from "../src/configs/prismaClient";
 import { Provider, Role } from "../generated/prisma/enums";
 import slugify from "slugify";
 
-const seddingCategories = [
+export const seddingCategories = [
   {
     name: "UI Components",
     description:
