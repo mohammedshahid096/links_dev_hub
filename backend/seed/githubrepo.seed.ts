@@ -70,6 +70,16 @@ const githubReposList = [
     title: "Awesome Shortcuts - Productivity shortcuts for dev tools",
     url: "https://github.com/alebcay/awesome-shell",
   },
+  {
+    title:
+      "Awesome System Design Resources - A curated list of system design resources",
+    url: "https://github.com/ashishps1/awesome-system-design-resources",
+  },
+  {
+    title:
+      "Awesome Low Level Design - A curated list of low-level design resources",
+    url: "https://github.com/ashishps1/awesome-low-level-design",
+  },
 ];
 
 class GithubRepoSeedingService {
