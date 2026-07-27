@@ -286,6 +286,24 @@ const websitesList: {
     order: 46,
     category: "API Tools",
   },
+  {
+    title: "ReqBin",
+    url: "https://reqbin.com/",
+    order: 47,
+    category: "API Tools",
+  },
+  {
+    title: "MockAPI",
+    url: "https://mockapi.io/",
+    order: 48,
+    category: "API Tools",
+  },
+  {
+    title: "JSON Crack",
+    url: "https://jsoncrack.com/",
+    order: 49,
+    category: "Data Tools",
+  },
 ];
 class WebsiteSeedingService {
   categoryList: Category[];

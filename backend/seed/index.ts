@@ -83,6 +83,11 @@ export const seddingCategories = [
     description:
       "Tools for API testing, REST/GraphQL clients, WebSocket testing, API documentation, mocking, and development.",
   },
+  {
+    name: "Data Tools",
+    description:
+      "Tools for viewing, formatting, validating, transforming, visualizing, and generating JSON, XML, YAML, CSV, and other structured data.",
+  },
 ];
 class SeedingService {
   constructor() {}
