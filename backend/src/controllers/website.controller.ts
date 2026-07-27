@@ -75,12 +75,14 @@ export const getAllWebsitesController = async (
       page = "1",
       limit = "20",
       categoryId,
+      categorySlug,
     }: {
       sortBy?: SortOrder;
       searchTitle?: string;
       page?: string | number;
       limit?: string | number;
       categoryId?: string;
+      categorySlug?: string;
     } = req.query;
 
     const pageNumber = Math.max(1, Number(page));
@@ -89,7 +91,7 @@ export const getAllWebsitesController = async (
 
     // 1. Define Filter Criteria
     let where: websiteWhereInput = {
-      // isActive: true,
+      isActive: true,
     };
 
     if (searchTitle) {
@@ -100,6 +102,11 @@ export const getAllWebsitesController = async (
     }
     if (categoryId) {
       where.categoryId = categoryId;
+    }
+    if (categorySlug) {
+      where.category = {
+        slug: categorySlug,
+      };
     }
 
     // 2. Fetch Data and Total Count in parallel

@@ -18,7 +18,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/60 backdrop-blur-sm flex flex-col h-full overflow-hidden">
       <CardHeader className="pb-3 flex-none">
-        <Link href={`/websites?categoryId=${category.id}`} className="flex items-center gap-3">
+        <Link href={`/websites?categorySlug=${category.slug}`} className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary/20 transition-colors">
             <Folder className="w-5 h-5 text-primary" />
           </div>
@@ -32,7 +32,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
       </CardHeader>
 
       <CardContent className="pb-6 flex-grow relative">
-        <Link href={`/websites?categoryId=${category.id}`} className="absolute inset-0 z-0" />
+        <Link href={`/websites?categorySlug=${category.slug}`} className="absolute inset-0 z-0" />
         <div className="relative z-10 pointer-events-none">
           {category.description ? (
             <CardDescription className="line-clamp-3 text-sm leading-relaxed">

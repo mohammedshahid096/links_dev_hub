@@ -5,7 +5,7 @@ export interface GetWebsitesQuery {
   searchTitle?: string;
   page?: string | number;
   limit?: string | number;
-  categoryId?: string;
+  categorySlug?: string;
 }
 
 /**
@@ -17,7 +17,7 @@ export const getPublicWebsites = async (query: GetWebsitesQuery) => {
   if (query.searchTitle) queryParams.append("searchTitle", query.searchTitle);
   if (query.page) queryParams.append("page", query.page.toString());
   if (query.limit) queryParams.append("limit", query.limit.toString());
-  if (query.categoryId) queryParams.append("categoryId", query.categoryId);
+  if (query.categorySlug) queryParams.append("categorySlug", query.categorySlug);
 
   const queryString = queryParams.toString();
   const url = queryString ? `/websites?${queryString}` : "/websites";
@@ -30,6 +30,9 @@ export const getPublicWebsites = async (query: GetWebsitesQuery) => {
  * Get a single website by slug - public access.
  */
 export const getPublicWebsiteBySlug = async (slug: string) => {
-  const [success, data, status] = await Service.fetchGet(`/websites/slug/${slug}`, null);
+  const [success, data, status] = await Service.fetchGet(
+    `/websites/slug/${slug}`,
+    null,
+  );
   return { success, data, status };
 };

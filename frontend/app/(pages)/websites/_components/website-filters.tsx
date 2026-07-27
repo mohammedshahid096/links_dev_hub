@@ -12,7 +12,7 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const currentCategory = searchParams.get("categoryId") || "";
+  const currentCategory = searchParams.get("categorySlug") || "";
   const initialSearch = searchParams.get("searchTitle") || "";
   const currentSort = searchParams.get("sortBy") || "desc";
   const currentLimit = searchParams.get("limit") || "12";
@@ -38,13 +38,13 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
       } else {
         params.delete(name);
       }
-      
+
       // Reset to page 1 when filters change
       params.delete("page");
 
       router.push(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [pathname, router, searchParams]
+    [pathname, router, searchParams],
   );
 
   return (
@@ -70,26 +70,26 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
         <Label>Categories</Label>
         <div className="space-y-1.5 flex flex-col">
           <button
-            onClick={() => updateUrl("categoryId", "")}
+            onClick={() => updateUrl("categorySlug", "")}
             className={cn(
               "text-left px-3 py-2 rounded-md transition-colors text-sm font-medium",
               currentCategory === ""
                 ? "bg-primary text-primary-foreground"
-                : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                : "hover:bg-muted text-muted-foreground hover:text-foreground",
             )}
           >
             All Categories
           </button>
-          
+
           {categories.map((category) => (
             <button
               key={category.id}
-              onClick={() => updateUrl("categoryId", category.id.toString())}
+              onClick={() => updateUrl("categorySlug", category.slug.toString())}
               className={cn(
                 "text-left px-3 py-2 rounded-md transition-colors text-sm font-medium",
-                currentCategory === category.id.toString()
+                currentCategory === category.slug.toString()
                   ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                  : "hover:bg-muted text-muted-foreground hover:text-foreground",
               )}
             >
               {category.name}
@@ -107,7 +107,7 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
               "text-left px-3 py-2 rounded-md transition-colors text-sm font-medium",
               currentSort === "desc"
                 ? "bg-primary text-primary-foreground"
-                : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                : "hover:bg-muted text-muted-foreground hover:text-foreground",
             )}
           >
             Newest First
@@ -118,7 +118,7 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
               "text-left px-3 py-2 rounded-md transition-colors text-sm font-medium",
               currentSort === "asc"
                 ? "bg-primary text-primary-foreground"
-                : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                : "hover:bg-muted text-muted-foreground hover:text-foreground",
             )}
           >
             Oldest First
@@ -138,7 +138,7 @@ export function WebsiteFilters({ categories }: { categories: any[] }) {
                 "flex-1 px-3 py-1.5 rounded-md transition-colors text-sm font-medium border border-border/50",
                 currentLimit === limitValue
                   ? "bg-primary text-primary-foreground border-primary"
-                  : "hover:bg-muted text-muted-foreground hover:text-foreground bg-card"
+                  : "hover:bg-muted text-muted-foreground hover:text-foreground bg-card",
               )}
             >
               {limitValue}
