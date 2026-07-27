@@ -280,6 +280,12 @@ const websitesList: {
     order: 45,
     category: "Animations",
   },
+  {
+    title: "Hoppscotch",
+    url: "https://hoppscotch.io/",
+    order: 46,
+    category: "API Tools",
+  },
 ];
 class WebsiteSeedingService {
   categoryList: Category[];

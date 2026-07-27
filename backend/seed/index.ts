@@ -78,6 +78,11 @@ export const seddingCategories = [
     description:
       "Animation libraries, loading effects, transitions, and interactive UI elements.",
   },
+  {
+    name: "API Tools",
+    description:
+      "Tools for API testing, REST/GraphQL clients, WebSocket testing, API documentation, mocking, and development.",
+  },
 ];
 class SeedingService {
   constructor() {}
@@ -123,12 +128,6 @@ class SeedingService {
   async categorySeed() {
     console.log("Category Seed Started...");
 
-    let categoryExist = await prisma.category.findFirst();
-    if (categoryExist) {
-      console.log("Category Seed Skipped. Categories already exist.");
-      return;
-    }
-
     let adminUser = await prisma.user.findFirst({
       where: { role: Role.admin },
     });
@@ -147,12 +146,27 @@ class SeedingService {
       };
     });
 
-    await prisma.category.createMany({ data: categorySeedJson! });
+    let addedCount = 0;
+
+    for (let i = 0; i < categorySeedJson?.length; i++) {
+      let currentCategory = categorySeedJson[i];
+      console.log(i, " processing for the", currentCategory?.name);
+      let isCategoryExist = await prisma.category.findUnique({
+        where: { slug: currentCategory?.slug },
+      });
+      if (isCategoryExist) {
+        console.log("ignoring already exist");
+      } else {
+        await prisma.category.create({ data: currentCategory });
+        addedCount++;
+      }
+    }
 
     console.log(
-      "Category Seed Completed.",
+      "Category Seed Completed. Total : ",
       categorySeedJson.length,
       "categories inserted.",
+      addedCount,
     );
   }
 }
