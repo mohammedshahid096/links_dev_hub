@@ -88,6 +88,11 @@ export const seddingCategories = [
     description:
       "Tools for viewing, formatting, validating, transforming, visualizing, and generating JSON, XML, YAML, CSV, and other structured data.",
   },
+  {
+    name: "DSA & System Design",
+    description:
+      "Resources for learning data structures, algorithms, system design, low-level design, and software engineering interviews.",
+  },
 ];
 class SeedingService {
   constructor() {}

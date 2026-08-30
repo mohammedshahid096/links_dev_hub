@@ -304,6 +304,24 @@ const websitesList: {
     order: 49,
     category: "Data Tools",
   },
+  {
+    title: "AlgoCraft",
+    url: "https://www.algocraft.in/",
+    order: 50,
+    category: "DSA & System Design",
+  },
+  {
+    title: "AlgoMaster",
+    url: "https://algomaster.io/",
+    order: 51,
+    category: "DSA & System Design",
+  },
+  {
+    title: "Three UI",
+    url: "https://threeui.com/browse",
+    order: 51,
+    category: "UI Components",
+  },
 ];
 class WebsiteSeedingService {
   categoryList: Category[];
