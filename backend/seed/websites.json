@@ -316,5 +316,24 @@
     "url": "https://www.tokenrouter.com",
     "order": 52,
     "category": "AI Tools"
+  },
+
+  {
+    "title": "TempGBox",
+    "url": "https://tempgbox.net/",
+    "order": 53,
+    "category": "Utilities"
+  },
+  {
+    "title": "Temp Mail",
+    "url": "https://temp-mail.org/en/",
+    "order": 54,
+    "category": "Utilities"
+  },
+  {
+    "title": "shadcn/ui",
+    "url": "https://ui.shadcn.com/",
+    "order": 55,
+    "category": "UI Components"
   }
 ]
