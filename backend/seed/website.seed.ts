@@ -92,7 +92,7 @@ class WebsiteSeedingService {
           });
 
           processedData.push(addedWebsiteDetails);
-        } catch (error) {
+        } catch (error: any) {
           console.log(error);
         }
       }

@@ -335,5 +335,11 @@
     "url": "https://ui.shadcn.com/",
     "order": 55,
     "category": "UI Components"
+  },
+  {
+    "title": "Omni Route",
+    "url": "https://omniroute.online/",
+    "order": 56,
+    "category": "AI Tools"
   }
 ]
