@@ -341,5 +341,11 @@
     "url": "https://omniroute.online/",
     "order": 56,
     "category": "AI Tools"
+  },
+  {
+    "title": "QuickRef",
+    "url": "https://quickref.me",
+    "order": 57,
+    "category": "Developer Tools"
   }
 ]
