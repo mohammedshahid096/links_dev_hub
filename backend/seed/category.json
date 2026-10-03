@@ -70,5 +70,9 @@
   {
     "name": "DSA & System Design",
     "description": "Resources for learning data structures, algorithms, system design, low-level design, and software engineering interviews."
+  },
+  {
+    "name": "Sound & Audio",
+    "description": "Sound effects, UI sounds, audio assets, and sound libraries for websites, apps, games, and digital products."
   }
 ]

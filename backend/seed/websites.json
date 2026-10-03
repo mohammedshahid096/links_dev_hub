@@ -347,5 +347,29 @@
     "url": "https://quickref.me",
     "order": 57,
     "category": "Developer Tools"
+  },
+  {
+    "title": "SoundCN",
+    "url": "https://soundcn.xyz/",
+    "order": 58,
+    "category": "Sound & Audio"
+  },
+  {
+    "title": "OmniTools",
+    "url": "https://omnitools.app",
+    "order": 59,
+    "category": "Developer Tools"
+  },
+  {
+    "title": "Uiverse",
+    "url": "https://uiverse.io",
+    "order": 60,
+    "category": "UI Components"
+  },
+  {
+    "title": "Motion Organic",
+    "url": "https://motion-organic.kharsan.com/",
+    "order": 61,
+    "category": "Animations"
   }
 ]
